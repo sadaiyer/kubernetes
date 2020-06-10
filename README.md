@@ -1,0 +1,38 @@
+Create a nginx pod
+Create a busybox pod, that sleeps for 3600 seconds "sleep 3600"
+Create a pod, with 2 containers - busybox and nginx 
+Create a nginx pod and define a readiness probe - httpGet, port 80 and path of /
+Create a nginx pod and define a liveness probe of TCP port 80 check
+Create a nginx pod and define a liveness probe to check for "ls" of "/usr/share/nginx/html/index.html". (Do this later, after volumes)
+Create a ClusterIP service that exposes port 80 for the nginx pod
+Create a busybox pod and hit the ClusterIP service
+Create a nodePort service for the nginx pod
+
+Create a Pod with main container busybox and which executes this "while true; do echo 'Hi I am busybox' >> /var/log/index.html; sleep 5; done" and with sidecar container with nginx image which exposes on port 80. Use emptyDir Volume and mount this volume on path /var/log for busybox and on path /usr/share/nginx/html for nginx container. Verify both containers are running.
+
+
+
+
+
+At the end:
+Create a deployment of nginx with 20 replicas, use image as "nginx:1.14.2"
+Update the strategy to be rolling update: maxSurge of 6, max unavaiable as 3
+Create an environment variable name: company; value: hitachi-vantara and use it in the deployment
+Create a config map, config1 with - var1=val1, var2=val2 - use it in the deployment
+Create a config map, config2, with var3=val3, and make it available to the deployment as env variable VARIABLE3
+Create a config map, config3, with var4=val4, var5=val5 and mount the variables as a volume, mountPath - /etc/config, in the deployment
+Create a secret, secret1 with - var1=val1, var2=val2 - use it in the deployment
+Create a secret, secret2, with var3=val3, and make it available to the deployment as env variable VARIABLE3
+Create a secret, secret3, with var4=val4, var5=val5 and mount the variables as a volume, mountPath - /etc/secret, in the deployment
+Create an emptyDir volume and use in deployment
+Create a volume with hostPath as "/usr/share/nginx/html" and use in deployment
+
+There is a new version of the image, update your deployment to "nginx:1.15.10"
+
+Its 3am in the morning, and you have been called to deploy "nginx:1.15.66"
+
+
+
+
+
+
