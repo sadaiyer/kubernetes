@@ -1,0 +1,11 @@
+Ubuntu Vagrant for deploying K8S cluster
+https://github.com/LocusInnovations/k8s-vagrant-virtualbox
+	
+CentOS Vagrant for deploying K8S cluster
+https://github.com/justmeandopensource/kubernetes
+
+
+CKA Exam Prep
+git clone https://github.com/wuestkamp/cka-example-environments
+cd cka-example-environments/cluster1/ && vagrant up
+vagrant ssh cluster1-master1
