@@ -9,3 +9,14 @@ CKA Exam Prep
 git clone https://github.com/wuestkamp/cka-example-environments
 cd cka-example-environments/cluster1/ && vagrant up
 vagrant ssh cluster1-master1
+
+
+To enable login with password:
+Update the PasswordAuthentication parameter in the /etc/ssh/sshd_config file:
+	PasswordAuthentication yes
+
+Restart the SSH service.
+For Amazon Linux, RHEL 5, and SUSE Linux, use this command:
+	sudo service sshd restart
+For Ubuntu, use this command:
+	sudo service ssh restart
