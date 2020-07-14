@@ -1,0 +1,112 @@
+There are 2 ways you can generate the sada.crt file (the 3rd step)
+1. Generate the private key
+openssl genrsa -out sada.key 2048
+
+2. Generate the CSR
+openssl req -new -key sada.key -out sada.csr -subj "/CN=sada/O=dba"
+
+3. Have the CSR signed by the CA
+openssl x509 -req -in sada.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out sada.crt -days 500
+
+4a. Create cluster role and clusterrolebindings - only to create, manage, delete SECRETS, nothing else
+kubectl create clusterrole sada-role-cr --verb="*" --resource=secrets
+kubectl create clusterrolebinding sada-role-crb --clusterrole=sada-role-cr --user=sada
+
+4b.  For additional cluster role and clusterrolebindings, replace the $NAMESPACE and $USERNAME
+## https://gist.github.com/henning/2dda0b704426c66e78e355703a8dc177
+
+NAMESPACE=default
+USERNAME=sada
+
+cat <<EOF | kubectl create -f -
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  namespace: $NAMESPACE
+  name: deployment-manager
+rules:
+- apiGroups: ["", "extensions", "apps"]
+  resources: ["deployments", "replicasets", "pods"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"] # You can also use ["*"]
+EOF
+
+
+cat <<EOF | kubectl create -f -
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: $USERNAME-deployment-manager-binding
+  namespace: $NAMESPACE
+subjects:
+- kind: User
+  name: $USERNAME
+  apiGroup: ""
+roleRef:
+  kind: Role
+  name: deployment-manager
+  apiGroup: ""
+EOF
+
+
+5. Creating sada.config
+==================
+k config set-cluster sadacluster --server=https://192.168.101.101:6443 --kubeconfig=sada.config
+k config set-cluster sadacluster --certificate-authority-data=/etc/kubernetes/pki/ca.crt --kubeconfig=sada.config
+k config set-cluster sadacluster --certificate-authority=/etc/kubernetes/pki/ca.crt --kubeconfig=sada.config
+k config set-credentials sada --client-key=/root/certs/sada.key --client-certificate=/root/certs/sada.crt --kubeconfig=sada.config
+k config set-context sadaspace --cluster=sadacluster --namespace=default --user=sada --kubeconfig=sada.config
+k config use-context sadaspace --kubeconfig=sada.config
+
+sada.config
+=========
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority: /etc/kubernetes/pki/ca.crt
+    server: https://192.168.101.101:6443
+  name: sadacluster
+contexts:
+- context:
+    cluster: sadacluster
+    namespace: default
+    user: sada
+  name: sadaspace
+current-context: sadaspace
+kind: Config
+preferences: {}
+users:
+- name: sada
+  user:
+    client-certificate: /root/certs/sada1.crt
+    client-key: /root/certs/sada.key
+
+
+6. To test
+k get secrets --kubeconfig=sada.config
+
+
+7. This is the second way for the 3rd step: instead of "server auth", use "client auth", see below
+
+cat <<EOF | kubectl apply -f -
+apiVersion: certificates.k8s.io/v1beta1
+kind: CertificateSigningRequest
+metadata:
+  name: sada-csr
+spec:
+  request: $(cat sada.csr | base64 | tr -d '\n')
+  usages:
+  - digital signature
+  - key encipherment
+  - client auth             ### In the doc, there is a reference to server auth
+EOF
+
+8. k certificate approve sada-csr 
+	--certificate-authority=/etc/kubernetes/pki/ca.crt  (this was not required)
+
+9. kubectl get csr sada-csr -o jsonpath='{.status.certificate}' \
+            | base64 --decode > sada1.crt
+
+
+
+10. To test
+k get secrets --kubeconfig=sada.config
