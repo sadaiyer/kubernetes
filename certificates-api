@@ -97,11 +97,10 @@ spec:
   usages:
   - digital signature
   - key encipherment
-  - client auth             ### In the doc, there is a reference to server auth
+  - client auth             ### In the doc, there is a reference to server auth, not client auth.  For user request, need this option instead
 EOF
 
 8. k certificate approve sada-csr 
-	--certificate-authority=/etc/kubernetes/pki/ca.crt  (this was not required)
 
 9. kubectl get csr sada-csr -o jsonpath='{.status.certificate}' \
             | base64 --decode > sada1.crt
