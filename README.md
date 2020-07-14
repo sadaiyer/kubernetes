@@ -28,7 +28,7 @@ cat /etc/hosts
 
 4. Ensure you are able to login from master to nodes "silently"
 
-5. Follow K8S doc - summarized in k8s-install (copied below too)
+5. Follow K8S doc - summarized in "cluster-creation" file (copied below too)
 Step1: On-ALL NODES
 lsmod | grep br_netfilter
 #if not there, then 
