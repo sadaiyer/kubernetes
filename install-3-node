@@ -70,3 +70,11 @@ STEP7:
 kubeadm join 192.168.205.10:6443 --token 6zoei4.e4k9rpy0m8nxyxlo \
     --discovery-token-ca-cert-hash sha256:bcb31a9739ecaf31e0df8572b2c3868f0b1822c16a3789b9464be50b7579c65f 
 
+
+STEP8:
+===
+Installing etcdctl CLI  on CentOS
+https://computingforgeeks.com/how-to-install-etcd-on-rhel-centos-8/
+
+ETCD on Ubuntu
+https://computingforgeeks.com/how-to-install-etcd-on-ubuntu-18-04-ubuntu-16-04/
