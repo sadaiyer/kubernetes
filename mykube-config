@@ -1,0 +1,5 @@
+# the mykube.config is saved in mac /Users/siyer/Downloads/mykube.config and also saved as config in /Users/siyer/.kube
+k config use-context dev-kubernetes-admin --kubeconfig=mykube.config
+k config use-context kubernetes-admin --kubeconfig=mykube.config
+alias sc='k get ns;read -p "Enter nSpace:" nSpace;k config set-context --current --namespace=$nSpace;k config view --minify | grep namespace;export PS1="\[\]\u:\H:$nSpace:$ "'
+
