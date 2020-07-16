@@ -93,3 +93,6 @@ etcd --version
 
 export ETCDCTL_API=3
 
+STEP9: Install metrics server
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml
+
