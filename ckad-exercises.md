@@ -1,5 +1,8 @@
 # Certified Kubernetes Application Developer Practice Exercises
-## CKAD...
+### kubectl explain pod.spec --recursive > pod.spec
+### kubectl explain deploy.spec --recursive > deploy.spec
+### kubectl explain service.spec --recursive > service.spec
+### export dr='--dry-run=client -o yaml'
 ### Practice, Practise, Practise!!
 
 # POD
@@ -17,22 +20,114 @@ k run nginx-pod --image=nginx  $dr > nginx-pod.yaml
 
 k get pod nginx-pod -o yaml > nginx-pod.yaml
 
-k edit nginx-pod 
+k edit pod nginx-pod 
 ```
 </p>
 </details>
 
 
 
-# HEADER TEMPLATE
-## Sub-Heading
+# Readiness and Liveness Probe on a POD
+## Create a nginx pod, image=nginx, pod-name=are-you-ready-nginx, and define a readiness probe - httpGet, port 80 and path of /
+## Create a nginx pod, image=nginx, pod-name=are-you-alive-nginx and define a liveness probe of TCP port 80
+## Now edit the Readiness and livenessProbe to check after a delay of 30 seconds, and every 30 seconds thereafter
 ### Note 
 
 <details><summary>show</summary>
 <p>
 
 ```bash
-Solution here.....
+k run are-you-ready-nginx --image=nginx $dr > are-you-ready-nginx.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: are-you-ready-nginx
+  name: are-you-ready-nginx
+spec:
+  containers:
+  - image: nginx
+    name: are-you-ready-nginx
+    readinessProbe:
+      httpGet:
+       path: /
+       port: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+
+k run are-you-alive-nginx --image=nginx $dr > are-you-alive-nginx.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: are-you-alive-nginx
+  name: are-you-alive-nginx
+spec:
+  containers:
+  - image: nginx
+    name: are-you-alive-nginx
+    livenessProbe:
+      tcpSocket:
+        port: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: are-you-ready-nginx
+  name: are-you-ready-nginx
+spec:
+  containers:
+  - image: nginx
+    name: are-you-ready-nginx
+    readinessProbe:
+      httpGet:
+       path: /
+       port: 80
+      initialDelaySeconds: 30
+      periodSeconds: 30
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: are-you-alive-nginx
+  name: are-you-alive-nginx
+spec:
+  containers:
+  - image: nginx
+    name: are-you-alive-nginx
+    livenessProbe:
+      tcpSocket:
+        port: 80
+      initialDelaySeconds: 30
+      periodSeconds: 30
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+
+
 ```
 </p>
 </details>
@@ -102,8 +197,7 @@ Solution here.....
 
 
 Create a pod, with 2 containers - busybox and nginx 
-Create a nginx pod and define a readiness probe - httpGet, port 80 and path of /
-Create a nginx pod and define a liveness probe of TCP port 80 check
+
 Create a nginx pod and define a liveness probe to check for "ls" of "/usr/share/nginx/html/index.html". (Do this later, after volumes)
 Create a ClusterIP service that exposes port 80 for the nginx pod
 Create a busybox pod and hit the ClusterIP service
