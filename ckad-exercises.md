@@ -1,14 +1,15 @@
 # Certified Kubernetes Application Developer Practice Exercises
+## Practice, Practise, Practise!!
 ### kubectl explain pod.spec --recursive > pod.spec
 ### kubectl explain deploy.spec --recursive > deploy.spec
 ### kubectl explain service.spec --recursive > service.spec
 ### export dr='--dry-run=client -o yaml'
-### Practice, Practise, Practise!!
+
 
 # POD
 ## Create 2 individual pods
 ## 1. Create a nginx pod, image=nginx, pod-name: nginx-pod.  Review the YAML file created
-## 2. Create a busybox pod, that sleeps for 3600 seconds "sleep 3600"
+## 2. Create a busybox pod, name=sleepy-bb, image=busybox:1.28, that sleeps for 3600 seconds "sleep 3600"
 ### Note 
 
 <details><summary>show</summary>
@@ -21,6 +22,11 @@ k run nginx-pod --image=nginx  $dr > nginx-pod.yaml
 k get pod nginx-pod -o yaml > nginx-pod.yaml
 
 k edit pod nginx-pod 
+
+k run sleepy-bb --image=busybox:1.28 --command -- /bin/sh -c "sleep 3600"
+
+k run sleepy-bb --image=busybox:1.28 $dr --command -- /bin/sh -c "sleep 3600" > sleepy-bb.yaml
+
 ```
 </p>
 </details>
@@ -134,6 +140,134 @@ status: {}
 
 
 
+# Multi-Container PODs
+## Create a pod, pod name: multi-container-pod with 2 containers - busybox and nginx, name the container for busybox as "busybox1" and for nginx "nginx1". Use image as busybox:1.28 and nginx:1.15
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+
+k run multi-container-pod --image=busybox:1.28 $dr --command -- /bin/sh -c "sleep 1d" > multi-container-pod.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: multi-container-pod
+  name: multi-container-pod
+spec:
+  containers:
+  - command:
+    - /bin/sh
+    - -c
+    - sleep 1d
+    image: busybox:1.28
+    name: busybox1
+    resources: {}
+  - name: nginx1
+    image: nginx:1.14
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+
+```
+</p>
+</details>
+
+
+
+
+# Logging into the container
+## Now exec into the PODs - sleepy-bb first, followed by are-you-alive-nginx pod and the multi-container-pod
+### Run the command - nslookup kubernetes.default.svc.cluster.local in the sleepy-bb pod
+### Write to /usr/share/nginx/html/index.html "Hello from Kubernetes!"
+### Exec into busybox1 container in the multi-container-pod and curl localhost:80
+
+<details><summary>show</summary>
+<p>
+
+```bash
+
+# POD1:
+k exec sleepy-bb -it -- /bin/sh
+nslookup kubernetes.default.svc.cluster.local
+
+# POD2
+k exec are-you-alive-nginx -it -- /bin/sh
+apt-get update
+apt-get install vim
+echo 'Hello from Kubernetes!' > /usr/share/nginx/html/index.html
+# Run this in the shell inside your container
+apt-get update
+apt-get install curl
+curl http://localhost/
+# Later we will create a service for this POD, and curl the service endpoint
+
+# POD3
+k exec multi-container-pod -c busybox1 -it -- /bin/sh
+wget -O- localhost:80
+
+```
+</p>
+</details>
+
+
+
+# Service, ClusterIP and NodePort
+## Create a clusterIP service, name: alive-nginx-svc for the are-you-alive-nginx POD
+## Create a NodePort  service, name: alive-nginx-svc-np for the are-you-alive-nginx POD
+
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+
+#ClusterIP
+k expose pod are-you-alive-nginx --name=alive-nginx-svc --port=80
+k expose pod are-you-alive-nginx --name=alive-nginx-svc --port=80 $dr > alive-nginx-svc.yaml
+
+k exec sleepy-bb -it -- /bin/sh
+wget -O- alive-nginx-svc:80
+
+# NodePort
+k expose pod are-you-alive-nginx --name=alive-nginx-svc-np --port=80 $dr > alive-nginx-svc-np.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    run: are-you-alive-nginx
+  name: alive-nginx-svc-np
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    nodePort: 30080
+  type: NodePort
+  selector:
+    run: are-you-alive-nginx
+status:
+  loadBalancer: {}
+  
+  
+ kubectl get nodes -o wide
+ curl 192.168.205.12:30080
+  
+  
+
+```
+</p>
+</details>
+
+
+
 # HEADER TEMPLATE
 ## Sub-Heading
 ### Note 
@@ -150,55 +284,8 @@ Solution here.....
 
 
 
-# HEADER TEMPLATE
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-Solution here.....
-```
-</p>
-</details>
 
 
-
-# HEADER TEMPLATE
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-Solution here.....
-```
-</p>
-</details>
-
-
-
-# HEADER TEMPLATE
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-Solution here.....
-```
-</p>
-</details>
-
-
-
-
-Create a pod, with 2 containers - busybox and nginx 
-
-Create a nginx pod and define a liveness probe to check for "ls" of "/usr/share/nginx/html/index.html". (Do this later, after volumes)
 Create a ClusterIP service that exposes port 80 for the nginx pod
 Create a busybox pod and hit the ClusterIP service
 Create a nodePort service for the nginx pod
