@@ -1,9 +1,12 @@
 # Certified Kubernetes Application Developer Practice Exercises
-## Practice, Practise, Practise!!
+## Practice, Practice, Practice!!
+## In Australian and British English, 'practise' is the verb and 'practice' is the noun. In American English, 'practice' is both the verb and the noun.
 ### kubectl explain pod.spec --recursive > pod.spec
 ### kubectl explain deploy.spec --recursive > deploy.spec
 ### kubectl explain service.spec --recursive > service.spec
 ### export dr='--dry-run=client -o yaml'
+### kubectl create objectName -h  grep -i '#' -A 2
+### kubectl create cj -h | grep -i '#' -A 2
 
 ## My aliases...
 <details><summary>show</summary>
@@ -1053,31 +1056,80 @@ status: {}
 
 
 # Jobs and Cronjobs
-## Sub-Heading
+## Jobs, create a job that displays "Hello Job"
 ### Note 
 
 <details><summary>show</summary>
 <p>
 
 ```bash
-Solution here.....
+
+k create job job1 --image=bash -- /bin/sh -c "echo Hello Job"
+
+k get jobs
+
+k logs job1-676f8
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: helloworld
+spec:
+  template:
+    spec:
+      containers:
+      - name: busybox
+        image: busybox
+        command: ["echo", "Hello Kubernetes!!!"]
+      restartPolicy: Never
 ```
 </p>
 </details>
 
 
-# Network Policy
-## Sub-Heading
+## Cronjobs, create a cronjob using image: bash that runs every minute
 ### Note 
 
 <details><summary>show</summary>
 <p>
 
 ```bash
-Solution here.....
+
+k create cj cronjob1 --image=bash --schedule="*/1 * * * *" -- /bin/sh -c "echo Hello Cronjob"
+
+k get cj
+
+kgp
+
+k logs cronjob1-1601412960-rz9hq
+ 
 ```
 </p>
 </details>
+
+## Cronjobs, create a JOB from the CRONJOB, and then delete both the job and the cronjob
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+
+k create job -h | grep -i '#' -A 2
+
+k create job test-job --from=cronjob/cronjob1
+
+kgp
+
+k logs cronjob1-1601412960-rz9hq
+
+k delete cronjob cronjob1
+k delete job test-job
+ 
+```
+</p>
+</details>
+
 
 
 # Volumes
@@ -1160,6 +1212,21 @@ spec:
 </p>
 </details>
 
+
+
+
+# Network Policy
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
 
 # HEADER TEMPLATE
 ## Sub-Heading
