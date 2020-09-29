@@ -477,7 +477,7 @@ k exec configmap1 -it -- env | grep name
 </p>
 </details>
 
-# Config Map
+
 ## Create pod configmap2 and mount the same CM into the pod2 as a volume
 ### Note 
 
@@ -514,7 +514,7 @@ k exec configmap2 -it -- cat /tmp/config/fname
 </p>
 </details>
 
-# Config Mapo
+
 ## Create pod configmap3 and read the fname name as FNAME in the POD3
 ### Note 
 
