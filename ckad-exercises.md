@@ -5,6 +5,40 @@
 ### kubectl explain service.spec --recursive > service.spec
 ### export dr='--dry-run=client -o yaml'
 
+## Alias 
+<details><summary>show</summary>
+<p>
+
+```bash
+alias k='kubectl'
+alias kgp='k get pods'
+alias kgd='k get deploy'
+alias kgs='k get svc'
+alias kcf='k create -f'
+alias dp='k get pods;read -p "Enter podName:" podName;k delete pod $podName --force --grace-period=0;k get pods'
+alias sc='k get ns;read -p "Enter nSpace:" nSpace;k config set-context --current --namespace=$nSpace;k config view --minify | grep namespace;export PS1="\[\]\u:\H:$nSpace:$ "'
+alias c='clear'
+export dr='--dry-run=client -o yaml'
+
+alias bb='k run bb --image=busybox:1.28 --restart=Never --rm -it -- /bin/sh -c "sleep 3600"'
+alias ac='k run ac --image=sadaiyer/alpine-curl --restart=Never --rm -it '
+
+export EDITOR=vi
+export KUBE_EDITOR=vi
+alias kgn='kubectl get nodes'
+alias kdp='kubectl describe pod '
+alias wn='kubectl config view | grep namespace'
+export KN=' -n kube-system'
+alias kw='kgp -o wide -w'
+alias kj='kubeadm token create --print-join-command'
+alias kh='kubectl get cs;kubectl cluster-info;kubectl version --short; kubeadm alpha certs check-expiration'
+c
+
+
+```
+</p>
+</details>
+
 
 # POD
 ## Create 2 individual pods
