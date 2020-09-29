@@ -5,7 +5,7 @@
 ### kubectl explain service.spec --recursive > service.spec
 ### export dr='--dry-run=client -o yaml'
 
-## Alias 
+## My aliases...
 <details><summary>show</summary>
 <p>
 
@@ -1160,6 +1160,78 @@ spec:
 </p>
 </details>
 
+
+# HEADER TEMPLATE
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
+
+
+# HEADER TEMPLATE
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
+
+
+
+# HEADER TEMPLATE
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
+
+
+
+# HEADER TEMPLATE
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
+
+
+
+# HEADER TEMPLATE
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
 
 
 
