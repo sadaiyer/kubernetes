@@ -614,8 +614,6 @@ k create secret generic secret1 --from-literal=user=user1 --from-literal=pass=12
 </details>
 
 
-
-# HEADER TEMPLATE
 ## In the development namespace, create pod secret1 (image: nginx) and mount secret1 as volume
 ### Note 
 
@@ -655,8 +653,6 @@ k exec secret1 -it -- cat /tmp/secret/pass
 </details>
 
 
-
-# Secrets
 ## In the development namespace, create pod secret2 (image: nginx) and read user as USER from secret1
 ### Note 
 
@@ -694,8 +690,6 @@ k exec secret2 -it -- env | grep USER
 </details>
 
 
-
-# Secrets
 ## In the development namespace, create pod secret3 (image: nginx) and read both the values from secret1, user and pass
 ### Note 
 
