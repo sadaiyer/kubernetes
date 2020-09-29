@@ -267,8 +267,764 @@ status:
 </details>
 
 
+# Create 3 pods 
+In the default namespace, nginx-pod (image: nginx), busybox-pod (image:busybox;1.28, sleep 1d) and bash-pod (image: bash, sleep 3600 seconds)
+<details><summary>show</summary>
+<p>
+
+```bash
+k run  --generator=run-pod/v1 nginx-pod --image=nginx
+k run  --generator=run-pod/v1 busybox-pod --image=busybox:1.28 --command -- /bin/sh -c "sleep 1d"
+k run  --generator=run-pod/v1 bash-pod --image=bash --command -- /bin/sh -c "sleep 3600"
+```
+</p>
+</details>
+
+
+# Create 3 deployments 
+In the default namespace, deployment 1: name: nginx-deploy, image: nginx:1.14 replicas: 2, labels: app=partner-portal tier=app cost-center=123, annotate deployment as 'nginx-1.14-custom approved-infosec'
+
+<details><summary>show</summary>
+<p>
+
+```bash
+k create deploy nginx-deploy --image=nginx:1.14 --dry-run -o yaml > nd.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: partner-portal         #change
+    tier: app                   #add
+    cost-center: "123"          #add
+  name: nginx-deploy
+  namespace: default            #add
+spec:
+  replicas: 2           #add
+  selector:
+    matchLabels:
+      app: partner-portal               #change
+      tier: app                         #add
+      cost-center: "123"                        #add
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: partner-portal             #change
+        tier: app                       #add
+        cost-center: "123"              #add
+    spec:
+      containers:
+      - image: nginx:1.14
+        name: nginx
+        resources: {}
+status: {}
+
+k annotate deploy nginx-deploy kubernetes.io/change-cause="nginx-1.14-custom approved-infosec"
+or
+you can add the annotation directly in above yaml file:
+kind: Deployment
+metadata:
+  annotations:
+    kubernetes.io/change-cause: "nginx-1.14-custom approved-infosec"
+    
+k rollout history deploy nginx-deploy
+
+```
+</p>
+</details>
+
+In the default namespace,  deployment 2: name: redis-deploy, image: redis replicas: 1, labesl:  labels: app=partner-portal tier=cache cost-center=123, annotate deployment as 'redis-custom approved-infosec'
+
+<details><summary>show</summary>
+<p>
+
+```bash
+k create deploy redis-deploy --image=redis --dry-run -o yaml > rd.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: partner-portal         #change
+    tier: cache                 #add
+    cost-center: "123"          #add
+  name: redis-deploy
+  namespace: default            #add
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: partner-portal         #change
+      tier: cache                 #add
+      cost-center: "123"          #add
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: partner-portal         #change
+        tier: cache                 #add
+        cost-center: "123"          #add
+    spec:
+      containers:
+      - image: redis
+        name: redis
+        resources: {}
+status: {}
+
+k annotate deploy redis-deploy kubernetes.io/change-cause="redis-custom approved-infosec"
+
+k rollout history deploy redis-deploy
+
+```
+</p>
+</details>
+
+
+In the default namespace, deployment 3: name: mysql-deploy, image: mysql replicas: 1, labels:  labels: app=partner-portal tier=db cost-center=123, annotate deployment as 'mysql-custom approved-infosec'
+
+<details><summary>show</summary>
+<p>
+
+```bash
+k create deploy mysql-deploy --image=mysql --dry-run -o yaml > md.sql
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: partner-portal         #change
+    tier: cache                 #add
+    cost-center: "123"          #add
+  name: mysql-deploy
+  namespace: default            #add
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-deploy
+      app: partner-portal         #change
+      tier: cache                 #add
+      cost-center: "123"          #add
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: partner-portal         #change
+        tier: cache                 #add
+        cost-center: "123"          #add
+    spec:
+      containers:
+      - image: mysql
+        name: mysql
+        env:
+        - name:  MYSQL_ROOT_PASSWORD
+          value: password
+        resources: {}
+status: {}
+
+k annotate deploy mysql-deploy kubernetes.io/change-cause="mysql-custom approved-infosec"
+
+ k rollout history deploy mysql-deploy
+ 
+```
+</p>
+</details>
+
+
+
+# Config Maps
+## Create config map, configmap1, fname=scott, lname=tiger, and read the config map values in a pod configmap1 using image: httpd:2.4-alpine
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+k create cm configmap1 --from-literal=fname=scott --from-literal=lname=tiger
+
+Create pod using imperative way and then edit the file 
+ k run configmap1 --image=httpd:2.4-alpine $dr > 1.yaml
+ 
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: configmap1
+  name: configmap1
+spec:
+  containers:
+  - image: httpd:2.4-alpine
+    name: configmap1
+    envFrom:              #add
+    - configMapRef:       #add
+        name: configmap1  #add
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+Test:
+k exec configmap1 -it -- env | grep name
+```
+</p>
+</details>
+
+# Config Map
+## Create pod configmap2 and mount the same CM into the pod2 as a volume
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: configmap2
+  name: configmap2
+spec:
+  volumes: 
+  - name: config-volume
+    configMap:
+       name: configmap1
+  containers:
+  - image: httpd:2.4-alpine
+    name: configmap2
+    volumeMounts:
+    - name: config-volume
+      mountPath: /tmp/config
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+Test: 
+k exec configmap2 -it -- cat /tmp/config/fname
+```
+</p>
+</details>
+
+# Config Mapo
+## Create pod configmap3 and read the fname name as FNAME in the POD3
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: configmap3
+  name: configmap3
+spec:
+  containers:
+  - image: httpd:2.4-alpine
+    name: configmap3
+    env:
+    - name: FNAME
+      valueFrom:
+       configMapKeyRef:
+        name: configmap1
+        key: fname
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+k exec configmap3 -it -- env | grep FNAME
+```
+</p>
+</details>
+
+# Custom namespace and deployment in the namespace, scheduling on the master node
+## Create a namespace "development" and then create deployment,ngind-deploy, using image:nginx to run on the master in the namespace development
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+k create ns development
+--now switch to development using alias "sc"
+
+k describe node k8s-head | grep -i taint
+
+k create deploy nginx-deploy --image=nginx $dr > 1.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx-deploy
+  name: nginx-deploy
+  namespace: development
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-deploy
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx-deploy
+    spec:
+      nodeSelector: 
+        kubernetes.io/hostname: k8s-head
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+status: {}
+
+```
+</p>
+</details>
+
+# Secrets...
+## In the development namespace, create a secret called secret1 user=user1 and pass=1234
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Use the alias sc to switch to development namespace
+k create secret generic secret1 --from-literal=user=user1 --from-literal=pass=1234
+```
+</p>
+</details>
+
+
 
 # HEADER TEMPLATE
+## In the development namespace, create pod secret1 (image: nginx) and mount secret1 as volume
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+k run secret1 --image=nginx $dr > 1.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: secret1
+  name: secret1
+spec:
+  volumes:
+  - name: secret-vol
+    secret:
+      secretName: secret1
+  containers:
+  - image: nginx
+    name: secret1
+    volumeMounts:
+    - name: secret-vol
+      mountPath: /tmp/secret
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+To test:
+k exec secret1 -it -- cat /tmp/secret/pass
+```
+</p>
+</details>
+
+
+
+# Secrets
+## In the development namespace, create pod secret2 (image: nginx) and read user as USER from secret1
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+k run secret2 --image=nginx $dr > 1.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: secret2
+  name: secret2
+spec:
+  containers:
+  - image: nginx
+    name: secret2
+    env:
+    - name: USER
+      valueFrom:
+        secretKeyRef:
+          key: user
+          name: secret1
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+k exec secret2 -it -- env | grep USER
+```
+</p>
+</details>
+
+
+
+# Secrets
+## In the development namespace, create pod secret3 (image: nginx) and read both the values from secret1, user and pass
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+k run secret3 --image=nginx $dr > 1.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: secret3
+  name: secret3
+spec:
+  containers:
+  - image: nginx
+    name: secret3
+    envFrom:
+    - secretRef:
+        name: secret1
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+k exec secret3 -it -- env | grep user
+k exec secret3 -it -- env | grep pass
+```
+</p>
+</details>
+
+
+
+# **NSLOOKUP**
+## In the development namespace, create a POD nslookup-nginx, nginx image and service, nslookup-nginx, and nslookup both the pod and service
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Create the POD and Service
+k run nslookup-nginx --image=nginx --expose --port=80
+
+Now, create a busybox pod, using image busybox:1.28
+
+k run bb --image=busybox:1.28 --command -- /bin/sh -c "sleep 3600"
+
+Now, get into the POD
+k exec bb -it -- /bin/sh
+
+Note that since the svc is in a different namespace, you can either nslookup via service name or if calling from a different namespace, make sure to use the fqdn but with the right namespace
+
+nslookup nslookup-nginx
+or
+nslookup nslookup-nginx.development.svc.cluster.local
+ 
+## For POD Lookups, substitute the "." (period) in PODs IP address with "-", see below.  Make sure the right namespace is being referred and reference to "pod" as well.  The POD I created has an ip address: 10.46.0.6
+
+nslookup 10-46-0-6.development.pod.cluster.local
+```
+</p>
+</details>
+
+
+
+
+# POD Anti-Affinity
+## In the development namespace, create a deployment, nginx-anti-pod-affinity-d, image: nginx, with 3 replicas, and ensure that the POD is created on different nodes, as in the replicas of POD should not run on the same node
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Sk create deploy nginx-anti-pod-affinity-d --image=nginx $dr > 1.yaml
+
+Edit the defintion as shown below to add the podAntiAffinity
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx-anti-pod-affinity-d
+  name: nginx-anti-pod-affinity-d
+  namespace: development
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-anti-pod-affinity-d
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx-anti-pod-affinity-d
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - nginx-anti-pod-affinity-d
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+status: {}
+```
+</p>
+</details>
+
+
+
+
+# Node Affinity
+## Create a POD, nginx-node-affinity-pod, image: nginx and schedule it on node k8s-node-1 using nodeAffinity
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Either you can create a new label or use existing labels on the node.  I prefer to use the existing label, see below
+
+k describe node k8s-node-2 | grep -i label -A 5
+
+Plan to use - kubernetes.io/hostname=k8s-node-2
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-node-affinity-pod
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+            - k8s-node-2
+  containers:
+  - name: nginx
+    image: nginx
+```
+</p>
+</details>
+
+
+
+
+# Co-Locating PODS on the same node
+## In the development namespace, create a deployment, partner-portal using image: nginx, container port running on 80, labels: tier=frontend; app=partner-portal, with 3 replicas. Add a redis deployment, partner-portal-cache, image: redis, replicas: 3 and make sure that each redis container is co-located with the nginx container
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Step1: create the parter-portal deployment with label: app: partner-portal 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: partner-portal
+    tier: frontend
+  name: partner-portal
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: partner-portal
+      tier: frontend
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: partner-portal
+        tier: frontend
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - partner-portal
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+status: {}
+
+Step2: Create the partner-portal-cache deployment with redis
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: partner-portal-cache
+  name: partner-portal-cache
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: partner-portal-cache
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: partner-portal-cache
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - partner-portal-cache
+            topologyKey: "kubernetes.io/hostname"
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - partner-portal
+            topologyKey: "kubernetes.io/hostname" 
+      containers:
+      - image: redis
+        name: redis
+        resources: {}
+status: {}
+```
+</p>
+</details>
+
+
+
+
+# Multi Container POD with an init container
+## In the development namespace, create a multi-container POD with an init-container. Mount a volume, name: workdir, to all containers that lasts for the life of the container. For the initContainer, call it initc, image: busybox, mount a volume as /work-dir that creates "hello World" index.html. For comtainer c1, use image: busybox, sleeps 1d. For container c2, use image as nginx, mount path /usr/share/nginx/html, and check for index.html as part of its readiness after a delay of 10 seconds and check port:80 and path: / as part of its liveness probe; for liveness, check after a delay of 20 seconds and continue to check at 30 seconds interval
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+k run mult-container-init-pod --image=busybox $dr --command -- /bin/sh -c "sleep 1d" > 1.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: mult-container-init-pod
+  name: mult-container-init-pod
+spec:
+  volumes:
+  - name: work-dir
+    emptyDir: {}
+  initContainers:
+  - command:
+    - /bin/sh
+    - -c
+    - echo HelloWorld > /work-dir/index.html
+    image: busybox
+    name: initc
+    volumeMounts:
+    - name: work-dir
+      mountPath: /work-dir
+  containers:
+  - command:
+    - /bin/sh
+    - -c
+    - sleep 1d
+    image: busybox
+    name: c1      
+    resources: {}
+  - name: c2
+    image: nginx
+    volumeMounts:
+    - name: work-dir
+      mountPath: /usr/share/nginx/html
+    readinessProbe:
+      exec:
+        command:
+        - ls
+        - /usr/share/nginx/html/index.html
+      initialDelaySeconds: 10
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 80
+      initialDelaySeconds: 20
+      periodSeconds: 30
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+```
+</p>
+</details>
+
+
+
+
+# Jobs and Cronjobs
 ## Sub-Heading
 ### Note 
 
@@ -281,6 +1037,100 @@ Solution here.....
 </p>
 </details>
 
+
+# Network Policy
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
+
+
+# Volumes
+## empty-dir
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
+
+
+# Volumes
+## hostpath
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
+
+
+
+# Volumes
+## PV and PVCs - Create pv and pvc's for nginx 
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+name: nginx-pv-volume
+storageclass: local
+size 1Gi
+hostPath: /mnt/data/nginx
+accessModes: ReadWriteMany
+
+pvc name: nginx-pv-claim
+
+<details><summary>show</summary>
+<p>
+
+```bash
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nginx-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: local
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data/nginx"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nginx-pv-claim
+spec:
+  storageClassName: local
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+
+```
+</p>
+</details>
 
 
 
