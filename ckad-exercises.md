@@ -5,7 +5,7 @@
 ### kubectl explain deploy.spec --recursive > deploy.spec
 ### kubectl explain service.spec --recursive > service.spec
 ### export dr='--dry-run=client -o yaml'
-### kubectl create objectName -h  grep -i '#' -A 2
+### kubectl create objectName -h | grep -i '#' -A 2
 ### kubectl create cj -h | grep -i '#' -A 2
 
 ## My aliases...
