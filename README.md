@@ -5,7 +5,7 @@ K8S files
 
 # Creating a local repository
 ## Follow instructions to create a local repository
-### Note 
+### Note: Refer youtube video: https://www.youtube.com/watch?v=r15S2tBevoE
 
 <details><summary>show</summary>
 <p>
