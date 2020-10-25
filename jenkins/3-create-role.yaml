@@ -1,0 +1,3 @@
+kubectl create clusterrole secret-reader-cr --verb=get,list,watch --resource=secrets
+
+k create clusterrolebinding secret-reader-crb --clusterrole=secret-reader-cr --user=system:serviceaccount:jenkins:jenkins
