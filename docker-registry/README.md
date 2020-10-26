@@ -1,9 +1,11 @@
 Create VM using vagrantfile
 
 #===Install docker
+
 sudo apt-get update
 
 #remove old versions, if required
+
 sudo apt-get remove docker docker-engine docker.io
 
 sudo apt install docker.io
@@ -11,6 +13,7 @@ sudo apt install docker.io
 sudo systemctl start docker
 
 sudo systemctl enable docker
+
 #====
 
 Used this video to create the private docker registry
