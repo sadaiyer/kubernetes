@@ -1,0 +1,3 @@
+#username docker-user
+#password docker-password
+docker-user:y-bash5/JLuAYTu5EvyT3Dxh7dmKEsEurBm4EyjFM.
