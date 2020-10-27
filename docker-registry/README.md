@@ -26,9 +26,9 @@ and both node1 and node2 have the FQDN in the /etc/hosts - instructions in OnNod
 created alias li that lists all the images that are created
 
 For username,password based auth, 
-1. Install apache, this provides httpd
+1. Install apache, this provides htpasswd that is used for username/password authentication
 
-2. Create directory /registry/auth
+2. Create directory /registry/auth on the node where registry is running
 
 3. htpasswd -Bbn docker-user docker-password > /registry/auth/htpasswd
 
