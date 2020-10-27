@@ -28,7 +28,7 @@ created alias li that lists all the images that are created
 For username,password based auth, 
 1. Install apache, this provides httpd
 
-2. Create /registry/auth
+2. Create directory /registry/auth
 
 3. htpasswd -Bbn docker-user docker-password > /registry/auth/htpasswd
 
@@ -38,25 +38,4 @@ For username,password based auth,
 
    create-docker-secret.yaml
    
-6. Run
-
-apiVersion: v1
-kind: Pod
-metadata:
-  creationTimestamp: null
-  labels:
-    run: myubuntu
-  name: myubuntu
-spec:
-  containers:
-  - image: docker-registry.sadaiyer.com:5000/myubuntu-nginx:v1
-    name: myubuntu
-    imagePullPolicy: Always
-    resources: {}
-  imagePullSecrets:
-  - name: dockercredentials
-  dnsPolicy: ClusterFirst
-  restartPolicy: Always
-status: {}
-
-
+6. Run myubuntu-image-pull-secrets.yaml
