@@ -37,5 +37,20 @@ For username,password based auth,
 5. Create secret on K8S cluster, see script
 
    create-docker-secret.yaml
+
+6. On docker-registry server (ubuntu01) , run copy-certs.sh, setup ssh-keygen so you can enable passwordless copy 
+
+scp -p /registry/certs/domain.crt root@node1:/root
+
+scp -p /registry/certs/domain.crt root@node2:/root
+
+7. Now on node1 and node2, copy the certificates to the right locations
+
+cd /etc/docker/
+
+mkdir -p certs.d/docker-registry.sadaiyer.com:5000
+
+cp /root/domain.crt certs.d/docker-registry.sadaiyer.com\:5000//
+
    
 6. Run myubuntu-image-pull-secrets.yaml
