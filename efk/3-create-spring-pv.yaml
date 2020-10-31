@@ -1,14 +1,13 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: elasticsearch-pv
+  name: mongodb-pv
   namespace: efk
 spec:
-  storageClassName: elasticsearch-pv
   accessModes:
     - ReadWriteOnce
   capacity:
-    storage: 30Gi
+    storage: 1Gi
  #persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: /data/elasticsearch-volume/
+    path: /data/mongodb-volume/

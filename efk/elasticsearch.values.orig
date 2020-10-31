@@ -60,15 +60,8 @@ podAnnotations: {}
 # additionals labels
 labels: {}
 
-esJavaOpts: "-Xmx1g -Xms1g"
-
-resources:
-  requests:
-    cpu: "1000m"
-    memory: "2Gi"
-  limits:
-    cpu: "1000m"
-    memory: "2Gi"
+#esJavaOpts: "-Xmx1g -Xms1g"
+esJavaOpts: "-Xmx128m -Xms128m"
 
 initResources: {}
   # limits:
@@ -88,12 +81,22 @@ sidecarResources: {}
 
 networkHost: "0.0.0.0"
 
+# Allocate smaller chunks of memory per pod.
+resources:
+  requests:
+    cpu: "100m"
+    memory: "1024M"
+  limits:
+    cpu: "1000m"
+    memory: "1024M"
+
+# Request smaller persistent volumes.
 volumeClaimTemplate:
   accessModes: [ "ReadWriteOnce" ]
   storageClassName: "elasticsearch-pv"
   resources:
     requests:
-      storage: 30Gi
+      storage: 5Gi
 
 rbac:
   create: false
@@ -119,6 +122,18 @@ podSecurityPolicy:
       - persistentVolumeClaim
 
 persistence:
+  enabled: true
+  storageClass: elasticsearch-pv
+  accessMode: "ReadWriteOnce"
+  size: "8Gi"
+  volumes:
+  #  - name: nothing
+  #    emptyDir: {}
+  mounts:
+  #  - mountPath: /var/nothing
+  #    name: nothing
+  #    readOnly: true
+  #
   enabled: true
   labels:
     # Add default labels for the volumeClaimTemplate fo the StatefulSet
