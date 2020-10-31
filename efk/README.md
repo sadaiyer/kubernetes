@@ -1,3 +1,5 @@
+# https://logz.io/blog/deploying-the-elk-stack-on-kubernetes-with-helm/
+# https://www.youtube.com/watch?v=rKkFGVMvAPM&t=1668s
 
 1. Create namespace using 1-create-ns.sh
 
