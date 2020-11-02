@@ -110,16 +110,15 @@ Test your CKS knowledge and learn from detailed solutions in a simulated hands-o
 
 
 
-# HEADER TEMPLATE
-## Sub-Heading
+# Read this PDF
+## Kubernetes Security
 ### Note 
 
 <details><summary>show</summary>
 <p>
 
 ```bash
-Solution here.....
-```
+https://github.com/sadaiyer/kubernetes/blob/master/ckss/pf-kubernetes-security-guide.pdf```
 </p>
 </details>
 
