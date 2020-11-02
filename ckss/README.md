@@ -118,7 +118,8 @@ Test your CKS knowledge and learn from detailed solutions in a simulated hands-o
 <p>
 
 ```bash
-https://github.com/sadaiyer/kubernetes/blob/master/ckss/pf-kubernetes-security-guide.pdf```
+https://github.com/sadaiyer/kubernetes/blob/master/ckss/pf-kubernetes-security-guide.pdf
+```
 </p>
 </details>
 
