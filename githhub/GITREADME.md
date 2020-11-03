@@ -192,6 +192,15 @@ When using ssh, need to do some config, and no username and password required un
 
 ssh-keygen --to create ssh keys
 
+cd ~/.ssh
+id_rsa              --private key
+id_rsa.pub          --public key
+known_hosts         --list of known hosts
+authorized_keys   
+
+ssh -T git@github.com (or the URL of the enterprise github repo)
+
+ssh-copy-id command --https://www.ssh.com/ssh/copy-id
 
 ```
 </p>
