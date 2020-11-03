@@ -28,7 +28,7 @@ Instal [git](https://git-scm.com/downloads) if you don't already have it.
 
 ```bash
 $ git clone https://github.com/sadaiyer/kubernetes.git
-$ cd kubernetes/ubunut-flannel/
+$ cd kubernetes/ubuntu-flannel/
 ```
 
 ## Starting the cluster
