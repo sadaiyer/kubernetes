@@ -1,4 +1,4 @@
-git init
+
 
 # Git commands
 ## Sub-Heading
@@ -8,6 +8,7 @@ git init
 <p>
 
 ```bash
+git init
 git status
 git add . or git add *
 git push
