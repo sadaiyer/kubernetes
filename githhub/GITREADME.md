@@ -7,6 +7,10 @@
 <p>
 
 ```bash
+
+Working area   -- Staging Area     -- Local Repo  -- Remote Repo
+
+
 git init
 git status
 git add . or git add *
@@ -135,21 +139,47 @@ git checkout <branch>
 
 
 
-# HEADER TEMPLATE
-## Sub-Heading
+# Git Clone
+## To Clone a repo
 ### Note 
 
 <details><summary>show</summary>
 <p>
 
 ```bash
-Solution here.....
+git clone <URL>
+Now if the repo gets updated, you can use git pull or git fetch to pull the updated code
+git pull <URL>
+or
+git fetch <URL>
+
+Working copy   -- Staging area      -- Local repo       -- Remote Repo
+
+<--------------------------------------------------------git pull
+<-------------------------------------git merge
+                                    
+                                    <-------git fetch------->
+
+Git pull = git fetch + get merge
+
+Git pull - get from remote repo to Working copy
+
+Git merge - local repo to working copy
+
+Git fetch - remote repo to local repo
+
+When to use git fetch vs get pull
+
+When you need to fetch the remote repo, use git pull
+If you do git fetch first, and if 2 people are working on the same copy, then git merge can help to resolve conflicts.  If you do git pull now, it will overwrite the changes since there is no merge for conflict checking
+
+
 ```
 </p>
 </details>
 
 
-# HEADER TEMPLATE
+# Github and using ssh keys
 ## Sub-Heading
 ### Note 
 
@@ -157,7 +187,12 @@ Solution here.....
 <p>
 
 ```bash
-Solution here.....
+
+When using ssh, need to do some config, and no username and password required unlike https based access
+
+ssh-keygen --to create ssh keys
+
+
 ```
 </p>
 </details>
