@@ -27,8 +27,8 @@ Instal [git](https://git-scm.com/downloads) if you don't already have it.
 ## Open a shell and clone
 
 ```bash
-$ git clone git@github.com:LocusInnovations/k8s-vagrant-virtualbox.git
-$ cd k8s-vagrant-virtualbox
+$ git clone https://github.com/sadaiyer/kubernetes.git
+$ cd kubernetes/ubunut-flannel/
 ```
 
 ## Starting the cluster
