@@ -17,6 +17,9 @@ git add . or git add *
 git push
 git commit -m "message"
 
+To amend the above message
+git commit --amend -m "modified message" 
+
 To create an alias
 git remote add hv https://github.com/sadaiyer/hitachi.git
 
