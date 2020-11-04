@@ -258,8 +258,8 @@ Solution here.....
 </details>
 
 
-# GIT rebases
-## Sub-Heading
+# GIT rebase
+## Git rebase vs Git merge
 ### Note 
 
 <details><summary>show</summary>
@@ -316,7 +316,7 @@ then integrate feature branch to dev, deploy to dev
 </details>
 
 
-# HEADER TEMPLATE
+# Git best practises
 ## Sub-Heading
 ### Note 
 
@@ -324,7 +324,15 @@ then integrate feature branch to dev, deploy to dev
 <p>
 
 ```bash
-Solution here.....
+
+Use branching strategy and pull requests
+Commit once you finish your task
+Avoid merge commits
+Dont commit half-done work
+Test your code before commit
+Write Good commit messages before committing
+Try to use Git commands instead of GUI
+
 ```
 </p>
 </details>
