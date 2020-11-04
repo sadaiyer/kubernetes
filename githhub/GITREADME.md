@@ -28,6 +28,14 @@ git branch --to view
 git diff development -- to view difference between development and current branch
 git push aliasname branchname
 
+git remote -v  --to view all remote repos
+
+git branch -m master main --to rename master as main
+
+git branch -m uat --assuming stage is current branch
+or
+git branch -m stage uat
+
 ```
 </p>
 </details>
@@ -179,8 +187,8 @@ If you do git fetch first, and if 2 people are working on the same copy, then gi
 </details>
 
 
-# Github and using ssh keys
-## Sub-Heading
+# Github and using ssh keys 
+## HTTPS using username and personal access token (PAT)
 ### Note 
 
 <details><summary>show</summary>
@@ -200,8 +208,109 @@ authorized_keys
 
 ssh -T git@github.com (or the URL of the enterprise github repo)
 
+git remote add <aliasname> <ssh url for the github repo>
+
+Now to use the above, remember to use the ssh url alias
+
+git push <aliasname> <branch>
+
 ssh-copy-id command --https://www.ssh.com/ssh/copy-id
 
+For HTTPS access, you can use username and PAT (personal access token) instead
+Github - Settings - Developer settings - Personal access tokens
+PAT can be use with Github API
+
+```
+</p>
+</details>
+
+
+# HTTP Status Codes
+## 300 to 500
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+
+200 - OK, success
+
+300 - redirect
+
+Client side issue
+403 - forbidden
+401 - unauthorized
+404 - not found
+
+500 - Internal Server Error. Perhaps the most common message encountered, this indicates a generic server error that's displayed when the server cannot determine the exact problem.
+501 - Not Implemented.
+502 - Bad Gateway. 
+503 - Service Unavailable. 
+504 - Gateway Timeout.
+
+https://api.github.com
+
+Solution here.....
+
+```
+</p>
+</details>
+
+
+# GIT rebases
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+master
+     |
+     V development.  c1. c2. c3. c4
+
+To integrate develpment to master, use 
+git merge
+or 
+git rebase
+
+git merge development --will take all the 4 commits, and introduce as 1 new commit to master
+
+master    c5
+     |
+     V development.  c1. c2. c3. c4
+
+git rebase development --will take individual commits
+
+master c1. c2. c3. c4
+     |
+     V development.  c1. c2. c3. c4
+
+
+```
+</p>
+</details>
+
+
+# GIT Branching strategy
+## Determine # of branches
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Branches typically per environment
+Dev  --> dev env
+UAT. --> UAT env
+PROD. --> PROD env
+
+To fix bugs, create bugfix branch
+To create features, from master, create feature branch
+then integrate feature branch to dev, deploy to dev
+
+
 ```
 </p>
 </details>
@@ -263,6 +372,19 @@ Solution here.....
 </details>
 
 
+
+# HEADER TEMPLATE
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
 
 
 
