@@ -97,14 +97,42 @@ maven repos:  when, when you execute your mvn package command. It will then get 
 
 
 
-# Heading1
-## Sub-Heading
+# Maven Life-Cycle
+## Maven Goals
 ### Note 
 
 <details><summary>show</summary>
 <p>
 
 ```bash
+LC            Goals   Description
+--            -----   ---------------------------------------------------
+Clean         clean   Will delete the previous build file
+
+Site          site    Will generate the documents for the source code
+                      not used now-a-days, instead using swagger
+                      
+Default       validate  Will validate project structure and resource files
+              compile   
+              test      Will run jUnit test cases (c - cUnit, .net - .nUnit, c++ - CPPUnit )
+              package   Create package - ear, war or jar
+              install   Will store the package/build artifact in local repo
+              deploy    Will store in remote repo
+mvn test
+
+mvn package
+
+mvn clean package   --can specify multple goals at the same time
+
+mvn clean package -DskipTests
+or
+mvn clean package -Dmaven.test.skiptest
+
+In a Enterprise app, there are multiple modules and it will take time to build, use
+
+mvn package -pl <moduleName> <moduleName>
+
+
 
 ```
 </p>
