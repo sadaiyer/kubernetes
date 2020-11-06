@@ -132,7 +132,9 @@ In a Enterprise app, there are multiple modules and it will take time to build, 
 
 mvn package -pl <moduleName> <moduleName>
 
+java -jar filename
 
+for WAR and EAR, need an web server like TomCat
 
 ```
 </p>
