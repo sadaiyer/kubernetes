@@ -24,3 +24,10 @@ http://mithuntechnologies.com/DevOpsMT/Oct2020/Linux-2.html
 http://mithuntechnologies.com/DevOpsMT/Oct2020/Linux-5-Oct16th.html
 
 http://mithuntechnologies.com/DevOpsMT/Oct2020/GitCommands-2.html
+
+
+Recordings:
+
+http://mithuntechnologies.com/DevOpsMT/Oct2020/Maven-1.html
+http://mithuntechnologies.com/DevOpsMT/Oct2020/Maven-2.html
+
