@@ -13,8 +13,11 @@ https://www.youtube.com/channel/UC-Jr307MbEREy8bG6McwD6w
 https://youtu.be/IluhOk86prA
 
 http://mithuntechnologies.com/DevOpsMT/Sep2020/Linux-1-21stSep.html
+
 http://mithuntechnologies.com/DevOpsMT/Oct2020/Linux-2.html
+
 http://mithuntechnologies.com/DevOpsMT/Oct2020/Linux-3-14thOct.html
+
 http://mithuntechnologies.com/DevOpsMT/Oct2020/Linux-4-15thOct.html
 
 http://mithuntechnologies.com/DevOpsMT/Sep2020/Linux-1-21stSep.html
@@ -28,6 +31,16 @@ http://mithuntechnologies.com/DevOpsMT/Oct2020/GitCommands-2.html
 
 Recordings:
 
+http://mithuntechnologies.com/DevOpsMT/Oct2020/GitCommands-1.html
+
+http://mithuntechnologies.com/DevOpsMT/Oct2020/GitCommands-2.html
+
+http://mithuntechnologies.com/DevOpsMT/Oct2020/GitCommands-3.html
+
+http://mithuntechnologies.com/DevOpsMT/Oct2020/GitCommands-4.html
+
 http://mithuntechnologies.com/DevOpsMT/Oct2020/Maven-1.html
+
 http://mithuntechnologies.com/DevOpsMT/Oct2020/Maven-2.html
 
+http://mithuntechnologies.com/DevOpsMT/Oct2020/Maven-3.html
