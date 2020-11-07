@@ -142,14 +142,24 @@ for WAR and EAR, need an web server like TomCat
 
 
 
-# Heading1
-## Sub-Heading
+# Running WAR and EAR files
+## Need an application server
 ### Note 
 
 <details><summary>show</summary>
 <p>
 
 ```bash
+
+1. Apache Tomcat - open source, java based web application server --supports WAR files
+
+2. jBoss, renamed to Wildfly --RedHat --aquired by IBM --supports WAR & EAR files
+-from 1.x to 7.x it was called jBoss
+-8.x onwards, its called WildFly
+
+3. Websphere App Server - IBM
+
+4. BEA Weblogic Server  - now, Oracle
 
 ```
 </p>
@@ -158,7 +168,7 @@ for WAR and EAR, need an web server like TomCat
 
 
 
-# Heading1
+# Tomcat directory structure
 ## Sub-Heading
 ### Note 
 
@@ -166,6 +176,32 @@ for WAR and EAR, need an web server like TomCat
 <p>
 
 ```bash
+Tomcat directory Structure
+/bin    
+  - startup.sh
+  - shutdown.sh 
+  - catalina.sh start/stop
+  - version.sh
+
+/conf
+  - server.xml
+  - tomcat-users.xml
+
+/lib
+
+/logs
+  - catalina.out
+  - manager.log
+  - hostmanager.log
+  - localhost.log
+
+/webapps
+  - apps that you deploy, the WAR files will be here
+
+/work
+  - by default its empty, files that run show up here
+  
+/temp
 
 ```
 </p>
@@ -175,7 +211,7 @@ for WAR and EAR, need an web server like TomCat
 
 
 
-# Heading1
+# Tomcat Installation
 ## Sub-Heading
 ### Note 
 
@@ -183,6 +219,14 @@ for WAR and EAR, need an web server like TomCat
 <p>
 
 ```bash
+Pre-req: need java 1.8
+Tomcat 9.x, need Java 1.8 for this version of Tomcat
+Launch t2 micro
+sudo -i
+http://mithuntechnologies-devops.blogspot.com/search?q=java
+To install java - http://mithuntechnologies-devops.blogspot.com/search?q=java
+To install tomcat - http://mithuntechnologies-devops.blogspot.com/search?q=tomcat
+
 
 ```
 </p>
