@@ -296,7 +296,7 @@ Sada, please upload PDF in the github
 
 
 
-# Heading1
+# Web Servers
 ## Sub-Heading
 ### Note 
 
@@ -304,6 +304,33 @@ Sada, please upload PDF in the github
 <p>
 
 ```bash
+apache http server
+nGinx
+Oracle iPlanet
+IIS
+IBM HTTP Server - called IHS
+
+WebServer used for deploying static context - html, CSS, JS, images, XML
+Web Servers can be used as Load Balancing Server
+HAProxy is only for load balancing, no ability to serve static content
+
+AppServer is used for deploying backend related code such ass JAVA, e.g. WAR file 
+Executes business logic
+
+
+In the apache-tc server, 10.0.0.51, install apache http server, it runs as "apache" (system user) user
+
+http://mithuntechnologies-devops.blogspot.com/search/label/HTTP%20Server
+
+Use this instead - https://phoenixnap.com/kb/how-to-install-apache-web-server-on-ubuntu-18-04
+
+apt-get update
+apt-get install apache2
+
+To verify, http://10.0.0.51:80
+
+Now, go to /var/www/html and create index.html
+
 
 ```
 </p>
