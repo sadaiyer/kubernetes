@@ -169,7 +169,7 @@ for WAR and EAR, need an web server like TomCat
 
 
 # Tomcat directory structure
-## Sub-Heading
+## /opt/apache-tomcat-9.0.39
 ### Note 
 
 <details><summary>show</summary>
@@ -212,8 +212,8 @@ Tomcat directory Structure
 
 
 # Tomcat Installation
-## Sub-Heading
-### Note 
+## Need Java JDK 1.8
+### cd /Users/siyer/Downloads/K8S/second-vagrant-vm: 10.0.0.51:8080 
 
 <details><summary>show</summary>
 <p>
@@ -228,6 +228,20 @@ To install java - http://mithuntechnologies-devops.blogspot.com/search?q=java
 To install tomcat - http://mithuntechnologies-devops.blogspot.com/search?q=tomcat
 
 
+
+To deploy, use the admin UI - http://10.0.0.51:8080
+username: tomcat/tomcat
+
+manager-app and server status via the "manager-gui" role
+host-manager accessed via the "admin-gui" role
+
+cd /opt/apache-tomcat-9.0.39/conf
+I added in tomcat-users.xml file in 
+
+<role rolename="manager-gui"/>
+<user username="tomcat" password="tomcat" roles="tomcat, admin-gui, manager-gui"/>
+
+
 ```
 </p>
 </details>
@@ -236,14 +250,27 @@ To install tomcat - http://mithuntechnologies-devops.blogspot.com/search?q=tomca
 
 
 
-# Heading1
-## Sub-Heading
-### Note 
+# Deploy applications
+## WAR files in /webapps
+### Using mvn build tools, we have deployed the package
 
 <details><summary>show</summary>
 <p>
 
 ```bash
+10.0.0.51:/8080
+username: tomcat/tomcat
+deploy the WAR file using the 
+
+http://10.0.0.51:8080/<AppContextPath>
+
+http://10.0.0.51:8080/maven-web-application
+
+or
+copy the WAR file to /opt/apache-tomcat-9.0.39/webapps
+
+manager-app and server status via the "manager-gui" role
+host-manager accessed via the "admin-gui" role
 
 ```
 </p>
@@ -252,14 +279,15 @@ To install tomcat - http://mithuntechnologies-devops.blogspot.com/search?q=tomca
 
 
 
-# Heading1
-## Sub-Heading
+# Tomcat Performance issues
+## Review the tomcat PDF file provided
 ### Note 
 
 <details><summary>show</summary>
 <p>
 
 ```bash
+Sada, please upload PDF in the github
 
 ```
 </p>
