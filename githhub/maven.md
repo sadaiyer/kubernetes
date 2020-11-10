@@ -354,38 +354,3 @@ Now, go to /var/www/html and create index.html
 </details>
 
 
-
-# Heading1
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-```
-</p>
-</details>
-
-
-
-
-# Heading1
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-```
-</p>
-</details>
-
-
-
-
-
-
