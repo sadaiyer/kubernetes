@@ -141,6 +141,7 @@ and replace with
   <sonar.login>replace with token</sonar.login>
 
 
+
 ```
 </p>
 </details>
@@ -148,14 +149,62 @@ and replace with
 
 
 
-# Heading1
-## Sub-Heading
+# SonarQube
+## Admin Activities
 ### Note 
 
 <details><summary>show</summary>
 <p>
 
 ```bash
+
+Activity1:
+To change from h2 database, in the SQ server
+go to SonarQube home and conf directory
+$SQ_HOME/conf/sonar.properties  ($SQ_HOME is what I named)
+
+Activity2:
+Token validity is until you delete
+
+Activity3:
+Projects tab - all projects you ran sonar qube
+Issues - all issues related to the projects
+Rules - All languages and ruleset for the language
+
+Quality Profiles - You need to create Quality Profile instead of default profiles, these are for custom rules and severity - critical, major, minor, etc
+
+You can then assign the quality profile to ALL Java Projects in Quality Profile tab
+
+To assign quality profile to specific java project, click on 
+Project - select project - Administration - quality profile
+
+Quality Gates - When a project is marked as Passed or Failed, that is derived from the quality gate
+Default quality gate provided is Sonar Way (there is a default quality profile Sonar Way too)
+
+e.g. if code coverage is < 80% you want to fail the quality
+So create a Quality Gate - myQualityGate
+and then add a condition - the condition will be, in this case, code coverage condition
+The code coverage condition is "Coverage"
+
+Now assign this Quality Gate to the project
+Project - Admin - QG - myQualityGate
+
+Final Tab, Administration (see this when you login as administrator)
+Sub Tabs
+- Configuration
+- Security - Users; Groups; Permissions
+  By default users are assigned to "sonar-users" group
+  and not assigned to the "sonar-administrators" group
+- Projects
+- Systems 
+  - external database info here, by default H2 db details
+- Marketplace
+  - To add PL/SQL or ABAP, you need Developer Edition
+  - Enterprise - Apex, or Cobol, etc
+  - Data Center Edition
+ - In Marketplace,  you can also install and remove Plugins
+
+SonarCloud.io is the SaaS version for SonarQube
 
 ```
 </p>
