@@ -44,3 +44,7 @@ http://mithuntechnologies.com/DevOpsMT/Oct2020/Maven-1.html
 http://mithuntechnologies.com/DevOpsMT/Oct2020/Maven-2.html
 
 http://mithuntechnologies.com/DevOpsMT/Oct2020/Maven-3.html
+
+http://mithuntechnologies.com/DevOpsMT/Oct2020/SonarQube-1.html
+
+http://mithuntechnologies.com/DevOpsMT/Oct2020/SonarQube-2.html
