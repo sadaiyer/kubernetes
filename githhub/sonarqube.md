@@ -93,7 +93,7 @@ Install SQ community edition
 Port number: 9000
 admin/admin
 
-To change password: to to A logo on RHS top corner, click seucirty, change password
+To change password: to to A logo on RHS top corner, click security, change password
 
 
 ```
@@ -101,7 +101,7 @@ To change password: to to A logo on RHS top corner, click seucirty, change passw
 </details>
 
 
-# Heading1
+# Using SonarQube
 ## Sub-Heading
 ### Note 
 
@@ -109,6 +109,37 @@ To change password: to to A logo on RHS top corner, click seucirty, change passw
 <p>
 
 ```bash
+
+Lets start with a java project, we are using Maven, so we have a pom.xml file,   Add SonarQube server details in pom.xml - URL, username and password
+
+mvn clean sonar:sonar --is the command to issue next
+--sonar - first one is the plugin name
+--sonar - second, is the goal name
+
+<properties>
+  <sonar.host.url>http://sonarqube_server:9000</sonar.host.url>
+  <sonar.login>admin</sonar.login>
+  <sonar.password>admin</sonar.password>
+  
+</properties>
+
+and then execute
+
+mvn clean sonar:sonar
+
+Instead of using password above, instead generate token
+In SonarQube server, extreme RHS, click on A for Admin
+For username admin, generate Token here...
+Give a name for the token and click generate
+
+Now comment the username and password
+<!--
+  <sonar.login>admin</sonar.login>
+  <sonar.password>admin</sonar.password>
+-->
+and replace with
+  <sonar.login>replace with token</sonar.login>
+
 
 ```
 </p>
