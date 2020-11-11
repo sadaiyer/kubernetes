@@ -206,129 +206,11 @@ Sub Tabs
 
 SonarCloud.io is the SaaS version for SonarQube
 
-```
-</p>
-</details>
+SonarQube Scanner:
+If you dont have a build tool capability like ANT, Gradle or Maven, but still want to scan, install Scanner on your desktop
+$ sonar-scanner -v
 
-
-
-# Heading1
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-```
-</p>
-</details>
-
-
-
-
-# Heading1
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-```
-</p>
-</details>
-
-
-
-
-
-# Heading1
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-```
-</p>
-</details>
-
-
-
-
-# Heading1
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-```
-</p>
-</details>
-
-
-# Heading1
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-```
-</p>
-</details>
-
-
-
-
-# Heading1
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-```
-</p>
-</details>
-
-
-# Heading1
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-```
-</p>
-</details>
-
-
-
-
-# Heading1
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
+sonar-project.properties
 
 ```
 </p>
@@ -348,23 +230,5 @@ SonarCloud.io is the SaaS version for SonarQube
 ```
 </p>
 </details>
-
-
-
-
-# Heading1
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-```
-</p>
-</details>
-
-
 
 
