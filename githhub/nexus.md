@@ -33,7 +33,7 @@ admin
 Password in cat /opt/sonatype-work/nexus2/admin.password
 
 
-To chaange context path and port
+To change context path and port
 /opt/nexus/etc/nexus.properties
 application-port:9999
 nexus-context-path=sadaiyer
@@ -127,7 +127,9 @@ Go to nexus now - click on Browses icon - mycompany-snapshot
 
 Snapshot repo - used for ongoing development - so different version
 
-For production releases, after changing version from 0-0-1-snapshot to 1.0.0, then it will deploy to production releases - mycompany-release
+For production releases, after changing version from 0-0-1-snapshot to 1.0.0, then it will deploy to production releases - mycompany-release.   The word snapshot is the key.  Assuming 1.0.0 is having issues, if you try to deploy 1.0.0 again to the release, it will error http-400 - Bad Request.
+
+Option is to change version, but what if folks are using 1.1.0.  There is an option for the repo - "Disable Redeploy", change that to "Allow redeploy"; this will allow you to redeploy 1.0.0 again.  Settings (Gear icon) for the repo...
 
 ```
 </p>
@@ -142,6 +144,9 @@ For production releases, after changing version from 0-0-1-snapshot to 1.0.0, th
 <p>
 
 ```bash
+To share the jar files with different teams, create remote repo
+In the UI, create repo
+Then Browse, and upload component
 
 
 ```
