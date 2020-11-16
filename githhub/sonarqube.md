@@ -93,7 +93,7 @@ Install SQ community edition
 Port number: 9000
 admin/admin
 
-To change password: to to A logo on RHS top corner, click security, change password
+To change password: go to A logo on RHS top corner, click security, change password
 
 
 ```
