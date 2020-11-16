@@ -136,7 +136,7 @@ Option is to change version, but what if folks are using 1.1.0.  There is an opt
 </details>
 
 
-# Heading1
+# Remote repo, proxy repo and group repo
 ## Sub-Heading
 ### Note 
 
@@ -184,13 +184,28 @@ For all projects, you will have remote, central, proxy, group
 
 
 # Adminstration activities
-## Sub-Heading
+## Creating users, etc
 ### Note 
 
 <details><summary>show</summary>
 <p>
 
 ```bash
+
+Activity1:
+To create a user in Nexus 
+ - Gear icon (settings) - Security - Users
+
+Roles: nx-admin and nx-anonymous are 2 roles
+
+You can also integrate with LDAP/AD
+
+Activity2: Cleanup policy - to remove content from repos
+
+Activity3: API
+Activity4: Configure email server
+
+
 
 ```
 </p>
@@ -209,54 +224,5 @@ For all projects, you will have remote, central, proxy, group
 ```
 </p>
 </details>
-
-
-
-
-# Heading1
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-```
-</p>
-</details>
-
-
-
-# Heading1
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-```
-</p>
-</details>
-
-
-
-
-# Heading1
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-```
-</p>
-</details>
-
-
 
 
