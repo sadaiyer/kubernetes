@@ -75,7 +75,7 @@ For each project, create a release and snapshot
 
 
 
-# Integrating Maven with Nexuss
+# Integrating Maven with Nexus
 ## Sub-Heading
 ### Note 
 
@@ -148,6 +148,33 @@ To share the jar files with different teams, create remote repo
 In the UI, create repo
 Then Browse, and upload component
 
+Now go to maven server, in pom.xml add remote repo
+
+Concept of Proxy-Repo which proxies the central repo. Central repo has the dependencies - why - if central repo has virus (Assuming the central repo is in the cloud), proxy server which is local to the organization has AV software
+- create proxy-repo first
+and then go to Maven pom.xml
+Remove remote repo
+Add proxy repo
+
+Now execute
+mvn clean package 
+- since its not in proxy repo, it will fetch first from central repo
+
+Just a note: maven central repo is being maintained by maven community, so that indicates the central repo is public
+
+Concept of Group Repo
+IF you have multiple remote repos and you want to download from multpile repos, create a group that incudes
+- multiple remote repos
+- proxy repo
+
+Now use the group repo in the maven pom.xml configuration
+
+mvn clean package
+- the output will show downloading from group repo, but internally downloading from group repos
+
+CONCEPT:
+For each project, you will have a release and snapshot repo
+For all projects, you will have remote, central, proxy, group 
 
 ```
 </p>
@@ -156,7 +183,7 @@ Then Browse, and upload component
 
 
 
-# Heading1
+# Adminstration activities
 ## Sub-Heading
 ### Note 
 
