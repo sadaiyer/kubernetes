@@ -31,6 +31,8 @@ http://mithuntechnologies.com/DevOpsMT/Oct2020/GitCommands-2.html
 
 Recordings:
 
+Git
+
 http://mithuntechnologies.com/DevOpsMT/Oct2020/GitCommands-1.html
 
 http://mithuntechnologies.com/DevOpsMT/Oct2020/GitCommands-2.html
@@ -39,12 +41,21 @@ http://mithuntechnologies.com/DevOpsMT/Oct2020/GitCommands-3.html
 
 http://mithuntechnologies.com/DevOpsMT/Oct2020/GitCommands-4.html
 
+Maven
+
 http://mithuntechnologies.com/DevOpsMT/Oct2020/Maven-1.html
 
 http://mithuntechnologies.com/DevOpsMT/Oct2020/Maven-2.html
 
 http://mithuntechnologies.com/DevOpsMT/Oct2020/Maven-3.html
 
+SonarQube
+
 http://mithuntechnologies.com/DevOpsMT/Oct2020/SonarQube-1.html
 
 http://mithuntechnologies.com/DevOpsMT/Oct2020/SonarQube-2.html
+
+Nexus
+http://mithuntechnologies.com/DevOpsMT/Sep2020/Nexus-1.html
+http://mithuntechnologies.com/DevOpsMT/Sep2020/Nexus-2.html
+http://mithuntechnologies.com/DevOpsMT/Oct2020/Nexus-3-15thNov.html
