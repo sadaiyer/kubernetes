@@ -91,7 +91,7 @@ In the Maven server, in pom.xml
 <distributionManagement>
  <repository> 
   <id>nexus</nexus>
-  <name>Nexus release repo</name?
+  <name>Nexus release repo</name>
   <url>http://ip/sadaiyer/repository/mycompany-release/ </url>
  </repository> 
   
@@ -100,7 +100,7 @@ In the Maven server, in pom.xml
   <name>Nexus snapshot repo</name?
   <url>http://ip/sadaiyer/repository/mycompany-snapshot/ </url>
  </snapshotRepository> 
-</distributionManagement?>
+</distributionManagement>
 
 $MVN_HOME/conf
 Nexus credentials are stored in settings.xml
