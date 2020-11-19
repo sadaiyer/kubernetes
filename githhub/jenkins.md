@@ -38,14 +38,73 @@ wget -o /etc/yum.repos.d/jenkins  https://.....
 
 
 
-# Heading1
-## Sub-Heading
+# Integrating Jenkins
+## via pom.xml
 ### Note 
 
 <details><summary>show</summary>
 <p>
 
 ```bash
+
+Install maven, git on jenkins server
+When you do that in /var/lib/jenkins (jenkins home dire)
+
+/var/lib/jenkins
+/var/lib/jenkins/workspace/<app-name>/target/*.war --sub-dir where war file is
+
+
+Integrating Sonarqube with Jenkins
+
+Ensure that in pom.xml(in Git), you have the sonarqube details
+under <properties> 
+provide sonarQube url, username and password
+
+In jenkins, build step
+mvn
+clean package sonar:sonar
+
+Integrating Nexus with Jenkins
+Now create a snapshot repo in Jenkins
+In pom.xml (in Git), provide repo details
+
+In settings.xml, configure nexus credentials
+
+
+Since you installed maven on jenkins server, you have to specify the nexus credential in the settings.xml...which settings.xml
+When you do that in /var/lib/jenkins (jenkins home dire)- under tools directory, maven will be installed, so
+/var/lib/jenkins/mav*/conf/settings.xml
+
+Search for servers tag
+
+<server>
+  <id> </id>
+  <username> </username>
+  <password> </password>
+</server>
+
+
+Integrating TomCat to deploy with Jenkins
+
+Plugin: Deploy to Container
+is used to deploy to Tomcat (misleading name), same plugin works for jboss and wildfly
+
+Now in Post-Build actions, use Deploy war/ear to container
+**/<warfilename>.  each war signifies a directory corresponding to maven home 
+/var/lib/jenkins/mav*/<dir>/*.war
+
+Create TomCat credentials too
+TomCat URL
+
+
+How can you trigger
+1. Poll SCM
+2. Build Periodically
+3. Github web hook
+
+
+      
+
 
 ```
 </p>
