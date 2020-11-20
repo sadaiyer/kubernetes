@@ -113,7 +113,7 @@ How can you trigger
 
 
 
-# Heading1
+# Additional Jenkins functionality
 ## Sub-Heading
 ### Note 
 
@@ -121,13 +121,52 @@ How can you trigger
 <p>
 
 ```bash
+Configure email functionality
+Discard old build
+
+Jenkins job
+- Configure 
+Check Discard old builds
+Option for "Days to keep builds"
+Max # of builds to keep <-- both options are required
+
+Under Advanced
+Max # of builds to keep with Artifacts <-- both options are required
+
+
+Build Environment
+Option to "Delete workspace before build starts"
+If source code exists in Jenkins, will pull only updated code from GitHub - with the above option set, it will delete the workspace and do a full fresh clone from Github
+
+
+Option to Disable Project
+Why: if you dont want to trigger Jenkins build during maintainence of supporting servers - sonar, apache tc, etc
+
+JaCoCo Plugin for java code coverage
+Manage Jenkins - plugins - install JaCoCo plug in
+
+Under Post Build actions 
+Add Post-build action
+--Record JaCoCo coverage
+
+If code coverage < 80%, mark build as failure
+Enable "Change build status according the thresholds"
+and
+Specify the 80% option
+
+
+
+SMTP with Jenkins
+1  need SMTP server details. = smtp.gmail.com
+2. email id: iyersada@gmail.com/***
+
 
 ```
 </p>
 </details>
 
 
-# Heading1
+# Jenkins Directory structure
 ## Sub-Heading
 ### Note 
 
@@ -135,6 +174,25 @@ How can you trigger
 <p>
 
 ```bash
+jenkins home is /var/lib/jenkins
+  /jobs   <<-- all jobs sub-dir here
+    jobname
+      nextbuildnumber <<- text file
+      build
+          log
+  /workspace
+   - <jobName> source code that Jenkins pulls from Github
+   - <jobName>@tmp
+  
+  /users
+  
+  /plugins
+  
+  /nodes - default node is master (since it can have slaves)
+ 
+/var/logs/jenkins <<--jenkins.log 
+   
+
 
 ```
 </p>
