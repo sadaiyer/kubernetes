@@ -200,7 +200,87 @@ jenkins home is /var/lib/jenkins
 
 
 
-# Heading1
+# Plugins
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Maven Plugin
+When you go to new item, Maven is not there. Freestyle works for all - maven, python, etc
+Not available by default, so install "maven integration" plugin first
+
+Maven project - for java projects where maven is the build tool
+So, create new project, choose maven project
+
+Under Build trigger - new option - "Build after other projects are built"
+
+Safe Restart Plugin
+To restart Jenkins
+http://<url>:8080/restart     - will stop all running jobs and restart
+http://<url>:8080/safeRestart - will wait until all jobs are completed
+Need SafeRestart plugin to be installed
+
+Next Build Number Plugin
+To enable build start number
+To update specific file - NextBuildNumber in jobs directory
+Go to job level and you will see an option "Set Next Build Number"
+
+
+JaCoCo plugin - already done
+
+SSH Agent plugin
+Will discuss when we create a job using pipeline project
+
+Email Extension plugin
+Add Post Builds - Editable email (gets installed by default)
+
+SonarQube Scanner
+If you want to integrate SonarQube server with Jenkins, need SonarQube scanner plugin
+For Java-maven, we have seen that we keep sonar qube server details in pom.xml
+For nodeJS, .net language - need to integrate via the Sonarqube scanner plugin
+
+Audit Trail Plugin
+Configure System - you will see Audit Trail section, after you install Audit Trail plugin
+Add Logger
+Log File location details
+
+Schedule Build
+Like cron
+
+Job Config History plugin
+
+Blue Ocean plugin
+
+Publish over ssh
+- to copy file from server1 to server2, we use scp where we provide username and password; you can instead use this plugin
+
+Thin backup
+Install this plugin for Jenkins backup
+
+Build name and description Setter
+To prepend env to build number
+Go to job - click on configure - find "Set Build name" in Build environment, add "dev_" in front here.
+
+
+Convert to Pipeline plugin
+So far, created jobs using freestyle, later we will use pipeline.  To convert freestyle to pipeline, we will use this plugin
+
+Advanced Tab
+To install external plugins, you need to first download external plugins and then install
+
+
+
+```
+</p>
+</details>
+
+
+
+
+# Pipeline Project Type
 ## Sub-Heading
 ### Note 
 
@@ -213,6 +293,20 @@ jenkins home is /var/lib/jenkins
 </p>
 </details>
 
+
+
+# Heading1
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+
+```
+</p>
+</details>
 
 
 
