@@ -289,6 +289,48 @@ To install external plugins, you need to first download external plugins and the
 
 ```bash
 
+2 ways
+
+1. Scripted way
+node  <<--if you dont specify node name, it will run on master, will be useful when running on slave nodes
+OR
+node('master')
+{
+
+def mavenHome=tool name: "maven3.6.3". --this is the name we provided when we configured maven in jenkins - manage jenknis - global tools configuration
+
+stage('CheckoutCode')
+  {
+  }
+
+stage('buildCode')
+  {
+    sh "${mavenHome}/bin/mvn clean package"  --for windows, use bat instead.  To ensure we get mvn path, define variable using def
+  }
+stage('ExecuteSQReport')
+  {
+    sh "${mavenHome}/bin/mvn  sonar:sonar"
+  }
+
+stage('UploadArtifactToNexus')
+  {
+    sh "${mavenHome}/bin/mvn  deploy"
+  }
+
+
+stage('DeployArtifactToTomcatServer')
+    sshagent ( via groovy wizard )    --install plugin "ssh agent" to enable secure copy between jenkins server and Tomcat server, using plugin - create credentials using private key (pem file)
+      {
+       scp -o StrictHostKeyChecking target/*.war ec2-user@<ip>:/tomcat_path/webapps/ --tomcat is in /opt/tomcat*
+      }
+    
+  }
+  
+  
+  
+  
+}
+
 ```
 </p>
 </details>
