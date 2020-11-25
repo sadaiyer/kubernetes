@@ -319,15 +319,12 @@ stage('UploadArtifactToNexus')
 
 
 stage('DeployArtifactToTomcatServer')
-    sshagent ( via groovy wizard )    --install plugin "ssh agent" to enable secure copy between jenkins server and Tomcat server, using plugin - create credentials using private key (pem file)
+    sshagent ( via snippet generator )    --install plugin "ssh agent" to enable secure copy between jenkins server and Tomcat server, using plugin - create credentials using private key (pem file)
       {
-       scp -o StrictHostKeyChecking target/*.war ec2-user@<ip>:/tomcat_path/webapps/ --tomcat is in /opt/tomcat*
+       scp -o StrictHostKeyChecking=no target/*.war ec2-user@<ip>:/tomcat_path/webapps/ --tomcat is in /opt/tomcat*
       }
     
   }
-  
-  
-  
   
 }
 
