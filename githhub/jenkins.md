@@ -334,6 +334,89 @@ stage('DeployArtifactToTomcatServer')
 
 
 
+# Master-Slave in Jenkins
+## Architecture
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+
+Master--> slave1
+     |
+      --> slave2
+      
+Why MS arch - to improve performance, and spread load amongst slaves
+
+In master - install java, git, maven
+In slave  - install java, git can be differnt OS from master, such as windows
+For maven, see note below: *Since maven is installed on the master via global tool configuration, it enables maves on slave too
+
+Add new node:
+Go to Manage Jenkins - manage nodes and clouds 
+This is where you configure your slaves
+Name: node1
+Remote home dir: /home/ec2-user/node1 <--create this dir
+
+Launch method: Launch agents via ssh
+Credentials: when adding credentials, username: ec2-user;  add pem key
+Host key verification strategy: manualy trusted key verification strategy
+
+After successful connect, there will be a directory and file created in /home/ec2-user/node1
+
+remoting <--directory
+remoting.jar  <--file
+
+
+Now, configure job, or use an existing job
+Select the job - click configure
+Search for "Restrict where this project can be run" - Select the checkbox
+Provide the label expression
+
+
+*Since maven is installed on the master via global tool configuration, it enables maves on slave too
+/home/ec2-user/node1/workspace
+/home/ec2-user/node1/tools
+
+For a pipeline project, the "Restrict where this project can be run" is not available, so have to configure it...where? In jenkinsfile
+
+In jenkinsfile - replace
+node
+{
+}
+
+with 
+
+node('node1') <--can be nodename or label 
+{
+}
+
+If you run 2 jobs on the same node, it will queue the second job since we have # of Executors as 1
+
+Click on node1 - click on configure - change # of executors from 1 to new number (obviously depends on #cpu and memory on the server)
+
+
+```
+</p>
+</details>
+
+
+
+# Heading1
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+
+```
+</p>
+</details>
+
+
 # Heading1
 ## Sub-Heading
 ### Note 
@@ -362,4 +445,19 @@ stage('DeployArtifactToTomcatServer')
 </p>
 </details>
 
+
+
+
+# Heading1
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+
+```
+</p>
+</details>
 
