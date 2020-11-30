@@ -372,7 +372,7 @@ pipeline
       }
     }
  
-     stage ('DeployAppIntoTomcat')
+    stage ('DeployAppIntoTomcat')
     {
       steps {
         ssh agent command here
@@ -380,6 +380,14 @@ pipeline
       }
     }
  
+    post    --to send email
+    {
+      always or success or failure
+      {
+       Here will write code for sending email using snippet generator
+      }
+    
+    }
  
   }
   
