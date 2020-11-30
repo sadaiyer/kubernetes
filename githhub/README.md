@@ -59,3 +59,13 @@ Nexus
 http://mithuntechnologies.com/DevOpsMT/Sep2020/Nexus-1.html
 http://mithuntechnologies.com/DevOpsMT/Sep2020/Nexus-2.html
 http://mithuntechnologies.com/DevOpsMT/Oct2020/Nexus-3-15thNov.html
+
+Jenkins
+http://mithuntechnologies.com/DevOpsMT/Oct2020/Jenkins-1.html
+http://mithuntechnologies.com/DevOpsMT/Oct2020/Jenkins-2.html
+http://mithuntechnologies.com/DevOpsMT/Oct2020/Jenkins-3.html
+http://mithuntechnologies.com/DevOpsMT/Oct2020/Jenkins-4.html
+http://mithuntechnologies.com/DevOpsMT/Oct2020/Jenkins-5.html
+http://mithuntechnologies.com/DevOpsMT/Oct2020/Jenkins-6.html
+http://mithuntechnologies.com/DevOpsMT/Oct2020/Jenkins-7.html
+http://mithuntechnologies.com/DevOpsMT/Oct2020/Jenkins-8.html
