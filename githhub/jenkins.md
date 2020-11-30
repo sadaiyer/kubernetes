@@ -328,6 +328,64 @@ stage('DeployArtifactToTomcatServer')
   
 }
 
+
+2. Declarative way
+
+pipeline
+{
+  @Library --import groovy script existing libraries
+  
+  agent any --will run in master node, comment to specify node 
+  OR
+  agent
+  {
+    label 'NodeName/LabelName'
+  }
+  tools 
+  {
+   maven 'maven 3.6.3'
+  }
+  stages
+  {
+    stage ('CheckOutCode')
+    {
+      steps { git command from snippet generator }
+    }
+    stage ('Build')
+    {
+      steps {
+        sh "mvn clean package"
+      }
+    }
+    
+    stage ('ExecuteSonar')
+    {
+      steps {
+        sh "mvn sonar:sonar"
+      }
+    }
+    
+    stage ('UploaArtifactsIntoNexus')
+    {
+      steps {
+        sh "mvn deploy"
+      }
+    }
+ 
+     stage ('DeployAppIntoTomcat')
+    {
+      steps {
+        ssh agent command here
+        sh "scp command here"
+      }
+    }
+ 
+ 
+  }
+  
+ 
+}
+
 ```
 </p>
 </details>
