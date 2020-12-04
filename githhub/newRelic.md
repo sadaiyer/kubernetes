@@ -39,16 +39,3 @@ Choose synthetics for REST API monitoring
 
 
 
-
-# Heading1
-## Sub-Heading
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-```
-</p>
-</details>
