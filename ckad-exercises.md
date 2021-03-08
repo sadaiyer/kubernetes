@@ -70,240 +70,6 @@ k run sleepy-bb --image=busybox:1.28 $dr --command -- /bin/sh -c "sleep 3600" > 
 
 
 
-# Readiness and Liveness Probe on a POD
-## Create a nginx pod, image=nginx, pod-name=are-you-ready-nginx, and define a readiness probe - httpGet, port 80 and path of /
-## Create a nginx pod, image=nginx, pod-name=are-you-alive-nginx and define a liveness probe of TCP port 80
-## Now edit the Readiness and livenessProbe to check after a delay of 30 seconds, and every 30 seconds thereafter
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-k run are-you-ready-nginx --image=nginx $dr > are-you-ready-nginx.yaml
-
-apiVersion: v1
-kind: Pod
-metadata:
-  creationTimestamp: null
-  labels:
-    run: are-you-ready-nginx
-  name: are-you-ready-nginx
-spec:
-  containers:
-  - image: nginx
-    name: are-you-ready-nginx
-    readinessProbe:
-      httpGet:
-       path: /
-       port: 80
-    resources: {}
-  dnsPolicy: ClusterFirst
-  restartPolicy: Always
-status: {}
-
-
-k run are-you-alive-nginx --image=nginx $dr > are-you-alive-nginx.yaml
-
-apiVersion: v1
-kind: Pod
-metadata:
-  creationTimestamp: null
-  labels:
-    run: are-you-alive-nginx
-  name: are-you-alive-nginx
-spec:
-  containers:
-  - image: nginx
-    name: are-you-alive-nginx
-    livenessProbe:
-      tcpSocket:
-        port: 80
-    resources: {}
-  dnsPolicy: ClusterFirst
-  restartPolicy: Always
-status: {}
-
-
-
-apiVersion: v1
-kind: Pod
-metadata:
-  creationTimestamp: null
-  labels:
-    run: are-you-ready-nginx
-  name: are-you-ready-nginx
-spec:
-  containers:
-  - image: nginx
-    name: are-you-ready-nginx
-    readinessProbe:
-      httpGet:
-       path: /
-       port: 80
-      initialDelaySeconds: 30
-      periodSeconds: 30
-    resources: {}
-  dnsPolicy: ClusterFirst
-  restartPolicy: Always
-status: {}
-
-apiVersion: v1
-kind: Pod
-metadata:
-  creationTimestamp: null
-  labels:
-    run: are-you-alive-nginx
-  name: are-you-alive-nginx
-spec:
-  containers:
-  - image: nginx
-    name: are-you-alive-nginx
-    livenessProbe:
-      tcpSocket:
-        port: 80
-      initialDelaySeconds: 30
-      periodSeconds: 30
-    resources: {}
-  dnsPolicy: ClusterFirst
-  restartPolicy: Always
-status: {}
-
-
-
-```
-</p>
-</details>
-
-
-
-# Multi-Container PODs
-## Create a pod, pod name: multi-container-pod with 2 containers - busybox and nginx, name the container for busybox as "busybox1" and for nginx "nginx1". Use image as busybox:1.28 and nginx:1.15
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-k run multi-container-pod --image=busybox:1.28 $dr --command -- /bin/sh -c "sleep 1d" > multi-container-pod.yaml
-
-apiVersion: v1
-kind: Pod
-metadata:
-  creationTimestamp: null
-  labels:
-    run: multi-container-pod
-  name: multi-container-pod
-spec:
-  containers:
-  - command:
-    - /bin/sh
-    - -c
-    - sleep 1d
-    image: busybox:1.28
-    name: busybox1
-    resources: {}
-  - name: nginx1
-    image: nginx:1.14
-  dnsPolicy: ClusterFirst
-  restartPolicy: Always
-status: {}
-
-
-```
-</p>
-</details>
-
-
-
-
-# Logging into the container
-## Now exec into the PODs - sleepy-bb first, followed by are-you-alive-nginx pod and the multi-container-pod
-### Run the command - nslookup kubernetes.default.svc.cluster.local in the sleepy-bb pod
-### Write to /usr/share/nginx/html/index.html "Hello from Kubernetes!"
-### Exec into busybox1 container in the multi-container-pod and curl localhost:80
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-# POD1:
-k exec sleepy-bb -it -- /bin/sh
-nslookup kubernetes.default.svc.cluster.local
-
-# POD2
-k exec are-you-alive-nginx -it -- /bin/sh
-apt-get update
-apt-get install vim
-echo 'Hello from Kubernetes!' > /usr/share/nginx/html/index.html
-# Run this in the shell inside your container
-apt-get update
-apt-get install curl
-curl http://localhost/
-# Later we will create a service for this POD, and curl the service endpoint
-
-# POD3
-k exec multi-container-pod -c busybox1 -it -- /bin/sh
-wget -O- localhost:80
-
-```
-</p>
-</details>
-
-
-
-# Service, ClusterIP and NodePort
-## Create a clusterIP service, name: alive-nginx-svc for the are-you-alive-nginx POD
-## Create a NodePort  service, name: alive-nginx-svc-np for the are-you-alive-nginx POD
-
-### Note 
-
-<details><summary>show</summary>
-<p>
-
-```bash
-
-#ClusterIP
-k expose pod are-you-alive-nginx --name=alive-nginx-svc --port=80
-k expose pod are-you-alive-nginx --name=alive-nginx-svc --port=80 $dr > alive-nginx-svc.yaml
-
-k exec sleepy-bb -it -- /bin/sh
-wget -O- alive-nginx-svc:80
-
-# NodePort
-k expose pod are-you-alive-nginx --name=alive-nginx-svc-np --port=80 $dr > alive-nginx-svc-np.yaml
-
-apiVersion: v1
-kind: Service
-metadata:
-  creationTimestamp: null
-  labels:
-    run: are-you-alive-nginx
-  name: alive-nginx-svc-np
-spec:
-  ports:
-  - port: 80
-    protocol: TCP
-    nodePort: 30080
-  type: NodePort
-  selector:
-    run: are-you-alive-nginx
-status:
-  loadBalancer: {}
-  
-  
- kubectl get nodes -o wide
- curl 192.168.205.12:30080
-  
-  
-
-```
-</p>
-</details>
-
-
 # Create 3 pods 
 In the default namespace, nginx-pod (image: nginx), busybox-pod (image:busybox;1.28, sleep 1d) and bash-pod (image: bash, sleep 3600 seconds)
 <details><summary>show</summary>
@@ -757,6 +523,240 @@ status: {}
 
 k exec secret3 -it -- env | grep user
 k exec secret3 -it -- env | grep pass
+```
+</p>
+</details>
+
+
+# Readiness and Liveness Probe on a POD
+## Create a nginx pod, image=nginx, pod-name=are-you-ready-nginx, and define a readiness probe - httpGet, port 80 and path of /
+## Create a nginx pod, image=nginx, pod-name=are-you-alive-nginx and define a liveness probe of TCP port 80
+## Now edit the Readiness and livenessProbe to check after a delay of 30 seconds, and every 30 seconds thereafter
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+k run are-you-ready-nginx --image=nginx $dr > are-you-ready-nginx.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: are-you-ready-nginx
+  name: are-you-ready-nginx
+spec:
+  containers:
+  - image: nginx
+    name: are-you-ready-nginx
+    readinessProbe:
+      httpGet:
+       path: /
+       port: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+
+k run are-you-alive-nginx --image=nginx $dr > are-you-alive-nginx.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: are-you-alive-nginx
+  name: are-you-alive-nginx
+spec:
+  containers:
+  - image: nginx
+    name: are-you-alive-nginx
+    livenessProbe:
+      tcpSocket:
+        port: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: are-you-ready-nginx
+  name: are-you-ready-nginx
+spec:
+  containers:
+  - image: nginx
+    name: are-you-ready-nginx
+    readinessProbe:
+      httpGet:
+       path: /
+       port: 80
+      initialDelaySeconds: 30
+      periodSeconds: 30
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: are-you-alive-nginx
+  name: are-you-alive-nginx
+spec:
+  containers:
+  - image: nginx
+    name: are-you-alive-nginx
+    livenessProbe:
+      tcpSocket:
+        port: 80
+      initialDelaySeconds: 30
+      periodSeconds: 30
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+
+
+```
+</p>
+</details>
+
+
+
+# Multi-Container PODs
+## Create a pod, pod name: multi-container-pod with 2 containers - busybox and nginx, name the container for busybox as "busybox1" and for nginx "nginx1". Use image as busybox:1.28 and nginx:1.15
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+
+k run multi-container-pod --image=busybox:1.28 $dr --command -- /bin/sh -c "sleep 1d" > multi-container-pod.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: multi-container-pod
+  name: multi-container-pod
+spec:
+  containers:
+  - command:
+    - /bin/sh
+    - -c
+    - sleep 1d
+    image: busybox:1.28
+    name: busybox1
+    resources: {}
+  - name: nginx1
+    image: nginx:1.14
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+
+```
+</p>
+</details>
+
+
+
+
+# Logging into the container
+## Now exec into the PODs - sleepy-bb first, followed by are-you-alive-nginx pod and the multi-container-pod
+### Run the command - nslookup kubernetes.default.svc.cluster.local in the sleepy-bb pod
+### Write to /usr/share/nginx/html/index.html "Hello from Kubernetes!"
+### Exec into busybox1 container in the multi-container-pod and curl localhost:80
+
+<details><summary>show</summary>
+<p>
+
+```bash
+
+# POD1:
+k exec sleepy-bb -it -- /bin/sh
+nslookup kubernetes.default.svc.cluster.local
+
+# POD2
+k exec are-you-alive-nginx -it -- /bin/sh
+apt-get update
+apt-get install vim
+echo 'Hello from Kubernetes!' > /usr/share/nginx/html/index.html
+# Run this in the shell inside your container
+apt-get update
+apt-get install curl
+curl http://localhost/
+# Later we will create a service for this POD, and curl the service endpoint
+
+# POD3
+k exec multi-container-pod -c busybox1 -it -- /bin/sh
+wget -O- localhost:80
+
+```
+</p>
+</details>
+
+
+
+# Service, ClusterIP and NodePort
+## Create a clusterIP service, name: alive-nginx-svc for the are-you-alive-nginx POD
+## Create a NodePort  service, name: alive-nginx-svc-np for the are-you-alive-nginx POD
+
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+
+#ClusterIP
+k expose pod are-you-alive-nginx --name=alive-nginx-svc --port=80
+k expose pod are-you-alive-nginx --name=alive-nginx-svc --port=80 $dr > alive-nginx-svc.yaml
+
+k exec sleepy-bb -it -- /bin/sh
+wget -O- alive-nginx-svc:80
+
+# NodePort
+k expose pod are-you-alive-nginx --name=alive-nginx-svc-np --port=80 $dr > alive-nginx-svc-np.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    run: are-you-alive-nginx
+  name: alive-nginx-svc-np
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    nodePort: 30080
+  type: NodePort
+  selector:
+    run: are-you-alive-nginx
+status:
+  loadBalancer: {}
+  
+  
+ kubectl get nodes -o wide
+ curl 192.168.205.12:30080
+  
+  
+
 ```
 </p>
 </details>
