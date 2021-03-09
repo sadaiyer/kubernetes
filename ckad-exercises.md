@@ -353,7 +353,7 @@ k exec configmap3 -it -- env | grep FNAME
 </details>
 
 # Custom namespace and deployment in the namespace, scheduling on the master node
-## Create a namespace "development" and then create deployment,ngind-deploy, using image:nginx to run on the master in the namespace development
+## Create a namespace "development" and then create deployment,nginx-deploy, using image:nginx to run on the master in the namespace development
 ### Note 
 
 <details><summary>show</summary>
@@ -1317,10 +1317,10 @@ At the end:
 Create a deployment of nginx with 20 replicas, use image as "nginx:1.14.2"
 Update the strategy to be rolling update: maxSurge of 6, max unavaiable as 3
 Create an environment variable name: company; value: hitachi-vantara and use it in the deployment
-Create a config map, config1 with - var1=val1, var2=val2 - use it in the deployment
+Create a config map, config1, with var1=val1, var2=val2 - use it in the deployment
 Create a config map, config2, with var3=val3, and make it available to the deployment as env variable VARIABLE3
 Create a config map, config3, with var4=val4, var5=val5 and mount the variables as a volume, mountPath - /etc/config, in the deployment
-Create a secret, secret1 with - var1=val1, var2=val2 - use it in the deployment
+Create a secret, secret1, with var1=val1, var2=val2 - use it in the deployment
 Create a secret, secret2, with var3=val3, and make it available to the deployment as env variable VARIABLE3
 Create a secret, secret3, with var4=val4, var5=val5 and mount the variables as a volume, mountPath - /etc/secret, in the deployment
 Create an emptyDir volume and use in deployment
