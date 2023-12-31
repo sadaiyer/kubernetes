@@ -781,13 +781,15 @@ k run bb --image=busybox:1.28 --command -- /bin/sh -c "sleep 3600"
 Now, get into the POD
 k exec bb -it -- /bin/sh
 
-Note that since the svc is in a different namespace, you can either nslookup via service name or if calling from a different namespace, make sure to use the fqdn but with the right namespace
+# Note that since the svc is in a different namespace, you can either nslookup via service name or
+# calling from a different namespace, make sure to use the fqdn but with the right namespace
 
 nslookup nslookup-nginx
 or
 nslookup nslookup-nginx.development.svc.cluster.local
  
-## For POD Lookups, substitute the "." (period) in PODs IP address with "-", see below.  Make sure the right namespace is being referred and reference to "pod" as well.  The POD I created has an ip address: 10.46.0.6
+## For POD Lookups, substitute the "." (period) in PODs IP address with "-", see below.
+# Make sure the right namespace is being referred and reference to "pod" as well.  The POD I created has an ip address: 10.46.0.6
 
 nslookup 10-46-0-6.development.pod.cluster.local
 ```
@@ -1380,15 +1382,83 @@ Solution here.....
 
 
 
-# HEADER TEMPLATE
-## Sub-Heading
-### Note 
+# Ingress
+## Install the ingress controller; I am using the one provided by Kim W in the course
+### Next, will create an httpd pod/service, nginx pod/service, an ingress resource and then test!
 
 <details><summary>show</summary>
 <p>
 
 ```bash
-Solution here.....
+# Install Ingress Controller and other resources
+
+kubectl apply -f https://raw.githubusercontent.com/killer-sh/cks-course-environment/master/course-content/cluster-setup/secure-ingress/nginx-ingress-controller.yaml
+
+#Notice the NodePort service created
+root:cks-master:default:$ kgs ingress-nginx-controller
+NAME                       TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE
+ingress-nginx-controller   NodePort   10.106.99.32   <none>        80:32395/TCP,443:30750/TCP   14h
+
+# in the same namespace, create 2 pods
+k run nginx --image=nginx
+k run httpd --image=httpd
+
+# expose them as services
+k expose pod/nginx --name=nginx --port=80
+k expose pod/httpd --name=httpd --port=80
+
+# now create the ingress resource
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /httpd
+        pathType: Prefix
+        backend:
+          service:
+            name: httpd
+            port:
+              number: 80
+      - path: /nginx
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx
+            port:
+              number: 80
+
+# From either the master/node nodes, or from your local pc, now execute the following curls
+curl http://192.168.64.12:32395/nginx
+
+curl http://192.168.64.12:32395/httpd
+
+# the nodeport above can be configured in your DNS name, say, as sadaiyer.net
+# in /etc/hosts, added
+sadaiyer@sadas-mbp ~ % cat /etc/hosts
+##
+# Host Database
+#
+# localhost is used to configure the loopback interface
+# when the system is booting.  Do not change this entry.
+##
+127.0.0.1	localhost
+255.255.255.255	broadcasthost
+::1             localhost
+192.168.64.12   sadaiyer.net
+
+# and now use the above
+
+curl http://sadaiyer.net:32395/nginx
+
+curl http://sadaiyer.net:32395/httpd
+
 ```
 </p>
 </details>
