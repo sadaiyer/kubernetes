@@ -1313,15 +1313,53 @@ k exec frontend -it -- curl backend
 </p>
 </details>
 
-# HEADER TEMPLATE
-## Sub-Heading
+# Network Policy..
+## Have the backend pod now connect to POD (nginx) called cassandra in the cassandra ns
 ### Note 
 
 <details><summary>show</summary>
 <p>
 
 ```bash
-Solution here.....
+k create ns cassandra
+k label ns/cassandra ns=cassandra
+
+# create POD cassandra with image nginx
+k run cassandra --image=nginx -n cassandra
+
+# Expose pod as a service
+k expose pod/cassandra --port=80 -n cassandra --name=cassandra
+
+Edit the network policy on the "backend" pod to allow egress to namespace selector cassandra
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-fe-to-be
+spec:
+  podSelector: 
+    matchLabels:
+      run: backend
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              run: frontend
+      ports:
+        - protocol: TCP
+          port: 80
+  egress:
+  - to: 
+      - namespaceSelector:
+           matchLabels:
+             ns: cassandra
+
+
+To test
+k exec backend -it -- curl cassandra.cassandra.svc.cluster.local
+
 ```
 </p>
 </details>
