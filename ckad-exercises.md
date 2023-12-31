@@ -34,7 +34,7 @@ alias wn='kubectl config view | grep namespace'
 export KN=' -n kube-system'
 alias kw='kgp -o wide -w'
 alias kj='kubeadm token create --print-join-command'
-alias kh='kubectl get cs;kubectl cluster-info;kubectl version --short; kubeadm alpha certs check-expiration'
+alias kh='kubectl get cs;kubectl cluster-info;kubectl version --short; kubeadm certs check-expiration'
 c
 
 
@@ -1216,14 +1216,99 @@ spec:
 
 
 # Network Policy
-## Sub-Heading
-### Note 
+##  Create NS netpol and in the new NS, create 2 pods, POD#1: name: frontend; image: nginx   POD#2: name: backend; image: nginx and expose 2 services frontend and backend respectively 
+### Confirm, that you are able to curl each of the PODs
+### In this lab, now do the following
+### Create a default deny all - the curl should stop working
+### Now allow frontend POD to communicate with backend POD
 
 <details><summary>show</summary>
 <p>
 
 ```bash
-Solution here.....
+# Create the namespace
+k create ns netpol
+
+# Switch context to namespace
+k config set-context --current --namespace=netpol
+
+# Create the PODs
+k run frontend --image=nginx
+k run backend --image=nginx
+
+# Create the Services
+k expose pod/frontend --port=80 --name=frontend
+k expose pod/backend --port=80 --name=backend
+
+# Test Curl
+k exec frontend -it -- curl backend
+k exec backend -it -- curl frontend
+
+# Create a DENY all network policy and re-test; but all port 53 (DNS resolution)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  egress:
+  - to:
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+
+CURL fails now
+
+# Allow frontend to ingress to backend POD
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-fe-to-be
+spec:
+  podSelector: 
+    matchLabels:
+      run: backend
+  policyTypes:
+  - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              run: frontend
+      ports:
+        - protocol: TCP
+          port: 80
+
+# Allow backend to egress to frontend POD
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-be-to-fe
+spec:
+  podSelector: 
+    matchLabels:
+      run: frontend
+  policyTypes:
+  - Egress
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              run: backend
+      ports:
+        - protocol: TCP
+          port: 80
+
+Test
+k exec frontend -it -- curl backend
+
+
+
 ```
 </p>
 </details>
