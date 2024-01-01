@@ -1367,15 +1367,16 @@ k exec backend -it -- curl cassandra.cassandra.svc.cluster.local
 </details>
 
 
-# HEADER TEMPLATE
-## Sub-Heading
+# Network Policy to deny access to metadata server/IP in Cloud
+## the IP is 169.254.169.254/32
 ### Note 
 
 <details><summary>show</summary>
 <p>
 
 ```bash
-Solution here.....
+# Will need to make this work in AWS or Google cloud, will not work on Vagrant, but network policy provides the solution anyway
+
 ```
 </p>
 </details>
@@ -1393,6 +1394,9 @@ Solution here.....
 # Install Ingress Controller and other resources
 
 kubectl apply -f https://raw.githubusercontent.com/killer-sh/cks-course-environment/master/course-content/cluster-setup/secure-ingress/nginx-ingress-controller.yaml
+
+# switch context to namespace
+k config set-context --current --namespace=ingress-nginx
 
 #Notice the NodePort service created
 root:cks-master:default:$ kgs ingress-nginx-controller
@@ -1465,6 +1469,49 @@ curl http://sadaiyer.net:32395/httpd
 
 
 
+# Secure Ingress
+## Create the TLS Cert, create secret using tls cert, use the secret in the Ingress and now access host/path via https port number
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+# Create the TLS Cert
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
+	# Common Name: sadaiyer.net  <---
+
+```
+</p>
+</details>
+
+# Service Accounts and using in PODS
+## including disabling auto mount of service account and providing service account privileges
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
+
+# HEADER TEMPLATE
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
+
+
 # HEADER TEMPLATE
 ## Sub-Heading
 ### Note 
@@ -1494,32 +1541,91 @@ Solution here.....
 </details>
 
 
+# HEADER TEMPLATE
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
 
 
-Create a ClusterIP service that exposes port 80 for the nginx pod
-Create a busybox pod and hit the ClusterIP service
-Create a nodePort service for the nginx pod
+# ETCD Backup
+##  Back up the etcd and restore to /var/lib/data/etcd-backup
+### Note 
 
-Create a pod with main container busybox and which executes "while true; do echo 'Hi I am busybox' >> /var/log/index.html; sleep 5; done" and with sidecar container with nginx image which exposes on port 80. Use emptyDir Volume and mount this volume on path /var/log for busybox and on path /usr/share/nginx/html for nginx container. Verify both containers are running.
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
+
+
+# Summary Exercises
+## Exercise #1
+### Create a ClusterIP service that exposes port 80 for the nginx pod
+### Create a busybox pod and hit the ClusterIP service
+### Create a nodePort service for the nginx pod
+
+### Create a pod with main container busybox and which executes "while true; do echo 'Hi I am busybox' >> /var/log/index.html; sleep 5; done" and with
+### sidecar container with nginx image which exposes on port 80. Use emptyDir Volume and mount this volume on path /var/log for busybox and on path
+### /usr/share/nginx/html for nginx container. Verify both containers are running.
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
 
 
 
 
 
-At the end:
-Create a deployment of nginx with 20 replicas, use image as "nginx:1.14.2"
-Update the strategy to be rolling update: maxSurge of 6, max unavaiable as 3
-Create an environment variable name: company; value: hitachi-vantara and use it in the deployment
-Create a config map, config1, with var1=val1, var2=val2 - use it in the deployment
-Create a config map, config2, with var3=val3, and make it available to the deployment as env variable VARIABLE3
-Create a config map, config3, with var4=val4, var5=val5 and mount the variables as a volume, mountPath - /etc/config, in the deployment
-Create a secret, secret1, with var1=val1, var2=val2 - use it in the deployment
-Create a secret, secret2, with var3=val3, and make it available to the deployment as env variable VARIABLE3
-Create a secret, secret3, with var4=val4, var5=val5 and mount the variables as a volume, mountPath - /etc/secret, in the deployment
-Create an emptyDir volume and use in deployment
-Create a volume with hostPath as "/usr/share/nginx/html" and use in deployment
+# Summary Exercises
+## Exercise # 2
+### Create a deployment of nginx with 20 replicas, use image as "nginx:1.14.2"
+### Update the strategy to be rolling update: maxSurge of 6, max unavaiable as 3
+### Create an environment variable name: company; value: hitachi-vantara and use it in the deployment
+### Create a config map, config1, with var1=val1, var2=val2 - use it in the deployment
+### Create a config map, config2, with var3=val3, and make it available to the deployment as env variable VARIABLE3
+### Create a config map, config3, with var4=val4, var5=val5 and mount the variables as a volume, mountPath - /etc/config, in the deployment
+### Create a secret, secret1, with var1=val1, var2=val2 - use it in the deployment
+### Create a secret, secret2, with var3=val3, and make it available to the deployment as env variable VARIABLE3
+### Create a secret, secret3, with var4=val4, var5=val5 and mount the variables as a volume, mountPath - /etc/secret, in the deployment
+### Create an emptyDir volume and use in deployment
+### Create a volume with hostPath as "/usr/share/nginx/html" and use in deployment
+### There is a new version of the image, update your deployment to "nginx:1.15.10"
+### Its 3am in the morning, and you have been called to deploy "nginx:1.15.66"
+<details><summary>show</summary>
+<p>
 
-There is a new version of the image, update your deployment to "nginx:1.15.10"
+```bash
+Solution here.....
+```
+</p>
+</details>
 
-Its 3am in the morning, and you have been called to deploy "nginx:1.15.66"
 
+# HEADER TEMPLATE
+## Sub-Heading
+### Note 
+
+<details><summary>show</summary>
+<p>
+
+```bash
+Solution here.....
+```
+</p>
+</details>
